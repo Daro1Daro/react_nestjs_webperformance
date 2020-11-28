@@ -1,0 +1,36 @@
+version: '3'
+services:
+  ## WPT SERVER ##
+  wpt_server:
+    build:
+      context: ./wpt/server
+      dockerfile: Dockerfile
+    ports:
+      - target: 80
+        published: 4000
+        protocol: tcp
+        mode: host
+    restart: unless-stopped
+
+  ## WPT AGENT ##
+  wpt_agent:
+    build:
+      context: ./wpt/agent
+      dockerfile: Dockerfile
+      network: host
+    shm_size: '1gb'
+    depends_on:
+      - wpt_server
+    ports:
+      - target: 80
+        published: 4001
+        protocol: tcp
+        mode: host
+    environment:
+      SERVER_URL: 'http://localhost:4000/work/'
+      LOCATION: 'Local'
+    cap_add:
+      - NET_ADMIN
+    restart: unless-stopped
+    volumes:
+      - wptagent_vol:/wptagent
