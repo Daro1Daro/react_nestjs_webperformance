@@ -34,3 +34,6 @@ services:
     restart: unless-stopped
     volumes:
       - wptagent_vol:/wptagent
+
+volumes:
+  wptagent_vol: wpt_agent_data
