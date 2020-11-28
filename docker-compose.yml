@@ -36,4 +36,5 @@ services:
       - wptagent_vol:/wptagent
 
 volumes:
-  wptagent_vol: wpt_agent_data
+  wptagent_vol:
+    name: wpt_agent_data
