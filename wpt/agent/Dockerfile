@@ -1,3 +1,3 @@
 FROM webpagetest/agent
-COPY script.sh /
+ADD script.sh /
 ENTRYPOINT /script.sh
