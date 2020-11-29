@@ -33,3 +33,5 @@
 /backend/.env.production
 /backend/.env.development
 /backend/.eslintcache
+
+/backend/.env.*

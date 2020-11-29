@@ -1,5 +1,38 @@
 version: '3.8'
 services:
+  ## SERVER ##
+  server:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    networks:
+      - database
+    depends_on:
+      - postgres_db
+      - wpt_server
+    ports:
+      - target: 3000
+        published: 3000
+        protocol: tcp
+        mode: host
+    restart: unless-stopped
+    command: ['node', 'main.js']
+    container_name: server
+
+  ## POSTGRES ##
+  postgres_db:
+    image: postgres
+    networks:
+      - database
+    environment:
+      - POSTGRES_USER=admin
+      - POSTGRES_PASSWORD=change_me
+      - POSTGRES_DB=wpt_app
+    volumes:
+      - ./server/database/data/prod:/var/lib/postgresql/data/
+    restart: unless-stopped
+    container_name: postgres_db
+
   ## WPT SERVER ##
   wpt_server:
     build:
@@ -11,6 +44,7 @@ services:
         protocol: tcp
         mode: host
     restart: unless-stopped
+    container_name: wpt_server
 
   ## WPT AGENT ##
   wpt_agent:
@@ -27,9 +61,14 @@ services:
     cap_add:
       - NET_ADMIN
     restart: unless-stopped
+    container_name: wpt_agent
     volumes:
       - wptagent_vol:/wptagent
 
 volumes:
   wptagent_vol:
     name: wpt_agent_data
+
+networks:
+  database:
+    driver: bridge
