@@ -12,11 +12,13 @@ services:
     depends_on:
       - postgres_db
       - wpt_server
-#    ports:
-#      - target: 3000
-#        published: 3000
-#        protocol: tcp
-#        mode: host
+
+    ports:
+      - target: 3000
+        published: 3000
+        protocol: tcp
+        mode: host
+
     restart: unless-stopped
     environment:
       - NODE_ENV=production
@@ -59,17 +61,19 @@ services:
       dockerfile: Dockerfile
     networks:
       - wpt_network
+
     ports:
       - target: 80
         published: 4000
         protocol: tcp
         mode: host
+
     restart: unless-stopped
     container_name: wpt_server
 
   ## WPT AGENT ##
   wpt_agent:
-#    network_mode: host
+    # network_mode: host
     build:
       context: ./wpt/agent
       dockerfile: Dockerfile
@@ -79,7 +83,7 @@ services:
     depends_on:
       - wpt_server
     environment:
-      SERVER_URL: 'http://wpt_server:4000/work/'
+      SERVER_URL: 'http://wpt_server/work/'
       LOCATION: 'Local'
     cap_add:
       - NET_ADMIN
