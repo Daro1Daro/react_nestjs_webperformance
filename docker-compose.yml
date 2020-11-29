@@ -69,7 +69,7 @@ services:
 
   ## WPT AGENT ##
   wpt_agent:
-    network_mode: host
+#    network_mode: host
     build:
       context: ./wpt/agent
       dockerfile: Dockerfile
