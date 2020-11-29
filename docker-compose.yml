@@ -16,6 +16,8 @@ services:
         protocol: tcp
         mode: host
     restart: unless-stopped
+    environment:
+      - NODE_ENV=production
     command: ['node', 'main.js']
     container_name: server
 
