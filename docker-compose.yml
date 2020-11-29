@@ -67,7 +67,7 @@ services:
         mode: host
 
     restart: unless-stopped
-    container_name: wpt_server
+    container_name: wpt-server
 
   ## WPT AGENT ##
   wpt_agent:
@@ -81,12 +81,12 @@ services:
     depends_on:
       - wpt_server
     environment:
-      SERVER_URL: 'http://wpt_server:80/work/'
+      SERVER_URL: 'http://wpt-server/work/'
       LOCATION: 'Local'
     cap_add:
       - NET_ADMIN
     restart: unless-stopped
-    container_name: wpt_agent
+    container_name: wpt-agent
     volumes:
       - wptagent_vol:/wptagent
 
