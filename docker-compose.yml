@@ -12,13 +12,11 @@ services:
     depends_on:
       - postgres_db
       - wpt_server
-
-    ports:
-      - target: 3000
-        published: 3000
-        protocol: tcp
-        mode: host
-
+    # ports:
+    #   - target: 3000
+    #     published: 3000
+    #     protocol: tcp
+    #     mode: host
     restart: unless-stopped
     environment:
       - NODE_ENV=production
@@ -83,7 +81,7 @@ services:
     depends_on:
       - wpt_server
     environment:
-      SERVER_URL: 'http://wpt_server/work/'
+      SERVER_URL: 'http://wpt_server:80/work/'
       LOCATION: 'Local'
     cap_add:
       - NET_ADMIN
