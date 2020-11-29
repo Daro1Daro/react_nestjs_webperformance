@@ -11,3 +11,5 @@ COPY .env.production /app/.env.production
 COPY package.json /app/package.json
 RUN npm install --silent
 RUN apk add --no-cache bash
+
+EXPOSE 3000

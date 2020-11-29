@@ -6,26 +6,43 @@ services:
       context: ./backend
       dockerfile: Dockerfile
     networks:
-      - database
+      - db_network
+      - app_network
+      - wpt_network
     depends_on:
       - postgres_db
       - wpt_server
-    ports:
-      - target: 3000
-        published: 3000
-        protocol: tcp
-        mode: host
+#    ports:
+#      - target: 3000
+#        published: 3000
+#        protocol: tcp
+#        mode: host
     restart: unless-stopped
     environment:
       - NODE_ENV=production
     command: ['node', 'main.js']
     container_name: server
 
+  ## CLIENT ##
+  client:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    networks:
+      - app_network
+    ports:
+      - target: 80
+        published: 80
+        protocol: tcp
+        mode: host
+    restart: unless-stopped
+    container_name: client
+
   ## POSTGRES ##
   postgres_db:
     image: postgres
     networks:
-      - database
+      - db_network
     environment:
       - POSTGRES_USER=admin
       - POSTGRES_PASSWORD=change_me
@@ -40,6 +57,8 @@ services:
     build:
       context: ./wpt/server
       dockerfile: Dockerfile
+    networks:
+      - wpt_network
     ports:
       - target: 80
         published: 4000
@@ -50,15 +69,17 @@ services:
 
   ## WPT AGENT ##
   wpt_agent:
-    network_mode: host
+#    network_mode: host
     build:
       context: ./wpt/agent
       dockerfile: Dockerfile
+    networks:
+      - wpt_network
     shm_size: '1gb'
     depends_on:
       - wpt_server
     environment:
-      SERVER_URL: 'http://localhost:4000/work/'
+      SERVER_URL: 'http://wpt_server:4000/work/'
       LOCATION: 'Local'
     cap_add:
       - NET_ADMIN
@@ -72,5 +93,9 @@ volumes:
     name: wpt_agent_data
 
 networks:
-  database:
+  db_network:
+    driver: bridge
+  app_network:
+    driver: bridge
+  wpt_network:
     driver: bridge
