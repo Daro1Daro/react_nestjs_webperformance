@@ -6,7 +6,7 @@ import * as rateLimit from 'express-rate-limit';
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
 
-  app.use(helmet);
+  app.use(helmet());
   app.use(rateLimit({
     windowMs: 15 * 60 * 1000,
     max: 100,
@@ -19,7 +19,7 @@ async function bootstrap() {
     message:
       "Too many accounts created from this IP, please try again after an hour"
   });
-  app.use("/auth/register", createAccountLimiter);
+  app.use("/api/auth/register", createAccountLimiter);
 
   app.setGlobalPrefix('api');
   await app.listen(3000);
