@@ -31,6 +31,8 @@
     "class-validator": "^0.12.2",
     "cpx": "^1.5.0",
     "dotenv": "^8.2.0",
+    "express-rate-limit": "^5.2.3",
+    "helmet": "^4.2.0",
     "passport": "^0.4.1",
     "passport-jwt": "^4.0.0",
     "passport-local": "^1.0.0",
