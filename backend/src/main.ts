@@ -13,6 +13,13 @@ async function bootstrap() {
     message:
       "Too many requests from this IP, please try again later"
   }));
+  const createAccountLimiter = rateLimit({
+    windowMs: 60 * 60 * 1000,
+    max: 3,
+    message:
+      "Too many accounts created from this IP, please try again after an hour"
+  });
+  app.use("/auth/register", createAccountLimiter);
 
   app.setGlobalPrefix('api');
   await app.listen(3000);
