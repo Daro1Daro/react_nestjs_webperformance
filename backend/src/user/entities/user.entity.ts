@@ -18,6 +18,11 @@ export class UserEntity {
   @Column()
   password: string;
 
+  @Column({
+    default: false,
+  })
+  isActive: boolean;
+
   @BeforeInsert()
   async hashPassword() {
     this.password = await argon2.hash(this.password);
