@@ -3,7 +3,7 @@ import './App.css';
 
 function App() {
   const fetchApi = () => {
-    fetch('/api')
+    fetch('/services')
       .then(response => {
         console.log(response);
       })

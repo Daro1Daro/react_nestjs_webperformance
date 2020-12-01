@@ -5,6 +5,8 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 
 import * as dotenv from 'dotenv';
 import { join } from "path";
+import { AuthModule } from './auth/auth.module';
+import { UserModule } from './user/user.module';
 
 dotenv.config({ path: join(__dirname, `${process.env.NODE_ENV === 'production' ? '' : '..'}`, `.env.${process.env.NODE_ENV || 'dev'}`) });
 
@@ -17,9 +19,11 @@ dotenv.config({ path: join(__dirname, `${process.env.NODE_ENV === 'production' ?
       username: process.env.DB_USER,
       password: process.env.DB_PASS,
       database: process.env.DB_NAME,
-      entities: ['src/**/entities/**.entity{.ts,.js}'],
+      entities: [`${__dirname}/**/entities/**.entity{.ts,.js}`],
       synchronize: true,
     }),
+    AuthModule,
+    UserModule,
   ],
   controllers: [AppController],
   providers: [AppService],
