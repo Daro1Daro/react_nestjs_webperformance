@@ -4,14 +4,17 @@ import { UserEntity } from './entities/user.entity';
 import { Repository, getRepository } from 'typeorm';
 import { CreateUserDto } from './dto/create-user.dto';
 import { validate } from 'class-validator';
+import { TokenEntity } from './entities/token.entity';
+import { createRandomString } from '../utils/functions';
 
 @Injectable()
 export class UserService {
   constructor(
     @InjectRepository(UserEntity)
     private readonly userRepository: Repository<UserEntity>,
-  ) {
-  }
+    @InjectRepository(TokenEntity)
+    private readonly tokenRepository: Repository<TokenEntity>,
+  ) {}
 
   async findOneByEmail(email: string): Promise<UserEntity> {
     const user = await this.userRepository.findOne({ email });
@@ -19,6 +22,25 @@ export class UserService {
       return null;
     }
     return user;
+  }
+
+  async findOneByToken(token: string): Promise<UserEntity> {
+    const user = await this.userRepository.createQueryBuilder('user')
+      .leftJoinAndSelect('user.tokens', 'token')
+      .where('token.code =(:token)', { token })
+      .getOne();
+    if (!user) {
+      return null;
+    }
+    return user;
+  }
+
+  async activateUser(user: UserEntity): Promise<boolean> {
+    if (!user.isActive) {
+      user.isActive = true;
+      return !!await this.userRepository.save(user);
+    }
+    return true;
   }
 
   async checkIfUsernameOrEmailExists(username: string, email: string): Promise<boolean> {
@@ -32,10 +54,10 @@ export class UserService {
 
   async create({ username, email, password }: CreateUserDto): Promise<UserEntity> {
     if (await this.checkIfUsernameOrEmailExists(username, email)) {
-      UserService.throwValidationError('Username and email must be unique.')
+      UserService.throwValidationError('Username and email must be unique.');
     }
 
-    let newUser = new UserEntity();
+    const newUser = new UserEntity();
     newUser.username = username;
     newUser.email = email;
     newUser.password = password;
@@ -46,6 +68,13 @@ export class UserService {
     } else {
       return await this.userRepository.save(newUser);
     }
+  }
+
+  async createEmailToken(user: UserEntity): Promise<any> {
+    const newToken = new TokenEntity();
+    newToken.code = createRandomString(24);
+    newToken.user = user;
+    return await this.tokenRepository.save(newToken);
   }
 
   static throwValidationError(message: string) {

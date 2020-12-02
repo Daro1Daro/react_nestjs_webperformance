@@ -3,7 +3,8 @@ import {
   Request,
   Get,
   Post,
-  UseGuards, Body,
+  Res,
+  UseGuards, Body, HttpStatus, Param,
 } from '@nestjs/common';
 import { LocalAuthGuard } from './guards/local-auth.guard';
 import { AuthService } from './auth.service';
@@ -12,9 +13,9 @@ import { CreateUserDto } from '../user/dto/create-user.dto';
 
 @Controller('auth')
 export class AuthController {
-  constructor(private authService: AuthService) {}
+  constructor(private authService: AuthService) {
+  }
 
-  // The req parameter will contain a user property (populated by Passport during the passport-local authentication flow)
   @UseGuards(LocalAuthGuard)
   @Post('login')
   async login(@Request() req) {
@@ -23,11 +24,9 @@ export class AuthController {
 
   @Post('register')
   async signUp(@Body() data: CreateUserDto) {
-    return this.authService.register(data);
+    return await this.authService.register(data);
   }
 
-  // When our GET /profile route is hit, the Guard will automatically invoke our passport-jwt custom configured logic,
-  // validating the JWT, and assigning the user property to the Request object.
   @UseGuards(JwtAuthGuard)
   @Get('profile')
   getUser(@Request() req) {
