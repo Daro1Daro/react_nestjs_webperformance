@@ -1,9 +1,9 @@
-import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { UserService } from '../user/user.service';
 import { JwtService } from '@nestjs/jwt';
-import { LoginUserDto } from '../user/dto/login-user.dto';
+import LoginUserDto from '../user/dto/login-user.dto';
 import * as argon2 from 'argon2';
-import { CreateUserDto } from '../user/dto/create-user.dto';
+import CreateUserDto from '../user/dto/create-user.dto';
 import * as nodemailer from 'nodemailer';
 import * as dotenv from 'dotenv';
 import { join } from 'path';
@@ -51,7 +51,7 @@ export class AuthService {
       to: email,
       subject: 'Verify Email',
       text: 'Verify Email',
-      html: `Hi! <br><br> Thanks for your registration<br><br><a href="http://${verifyUrl}">Click here to activate your account</a>`,
+      html: `Hi! <br><br> Thanks for your registration<br><br><a href="${verifyUrl}">Click here to activate your account</a>`,
     };
 
     return await new Promise<boolean>(async function(resolve, reject) {

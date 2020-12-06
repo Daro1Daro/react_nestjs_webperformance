@@ -2,10 +2,10 @@ import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { UserEntity } from './entities/user.entity';
 import { Repository, getRepository } from 'typeorm';
-import { CreateUserDto } from './dto/create-user.dto';
+import CreateUserDto from './dto/create-user.dto';
 import { validate } from 'class-validator';
 import { TokenEntity } from './entities/token.entity';
-import { createRandomString } from '../utils/functions';
+import { createRandomString } from '../common/utils/functions';
 
 @Injectable()
 export class UserService {
@@ -18,6 +18,14 @@ export class UserService {
 
   async findOneByEmail(email: string): Promise<UserEntity> {
     const user = await this.userRepository.findOne({ email });
+    if (!user) {
+      return null;
+    }
+    return user;
+  }
+
+  async findOneById(id: number): Promise<UserEntity> {
+    const user = await this.userRepository.findOne({ id });
     if (!user) {
       return null;
     }

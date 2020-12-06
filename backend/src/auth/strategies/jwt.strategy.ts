@@ -13,7 +13,6 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
     });
   }
 
-  // Passport will build a user object based on the return value of our validate() method, and attach it as a property on the Request object
   async validate(payload: any) {
     return { id: payload.sub, username: payload.username, email: payload.email };
   }

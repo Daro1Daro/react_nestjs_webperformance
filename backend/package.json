@@ -29,6 +29,7 @@
     "@nestjs/platform-express": "^7.5.1",
     "@nestjs/typeorm": "^7.1.5",
     "argon2": "^0.27.0",
+    "class-transformer": "^0.3.1",
     "class-validator": "^0.12.2",
     "cpx": "^1.5.0",
     "dotenv": "^8.2.0",
