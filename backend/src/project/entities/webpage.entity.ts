@@ -1,5 +1,6 @@
-import { Entity, PrimaryGeneratedColumn, Column, ManyToOne } from 'typeorm';
+import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, OneToMany } from 'typeorm';
 import { ProjectEntity } from './project.entity';
+import { SingleResultsEntity } from './singleResults.entity';
 
 @Entity('web_page')
 export class WebPageEntity {
@@ -20,4 +21,7 @@ export class WebPageEntity {
     onDelete: 'CASCADE',
   })
   project: ProjectEntity;
+
+  @OneToMany(type => SingleResultsEntity, singleResults => singleResults.webPage)
+  singleResults: SingleResultsEntity[];
 }

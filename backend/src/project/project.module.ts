@@ -6,9 +6,10 @@ import { UserModule } from '../user/user.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ProjectEntity } from './entities/project.entity';
 import { WebPageEntity } from './entities/webpage.entity';
+import { SingleResultsEntity } from './entities/singleResults.entity';
 
 @Module({
-  imports: [WptModule, UserModule, TypeOrmModule.forFeature([ProjectEntity, WebPageEntity])],
+  imports: [WptModule, UserModule, TypeOrmModule.forFeature([ProjectEntity, WebPageEntity, SingleResultsEntity])],
   providers: [ProjectService],
   controllers: [ProjectController]
 })
