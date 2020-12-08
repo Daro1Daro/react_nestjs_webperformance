@@ -1,7 +1,7 @@
-import { IsAlphanumeric, IsDate, IsNotEmpty, IsOptional, IsNumber } from 'class-validator';
+import { IsAlphanumeric, IsDate, IsNotEmpty, IsOptional, IsInt } from 'class-validator';
 
 class ReadProjectDto {
-  @IsNumber()
+  @IsInt()
   @IsNotEmpty()
   readonly id: number;
 

@@ -1,7 +1,7 @@
-import { IsAlphanumeric, IsDate, IsNotEmpty, IsNumber, IsUrl } from 'class-validator';
+import { IsAlphanumeric, IsDate, IsNotEmpty, IsInt, IsUrl } from 'class-validator';
 
 class ReadWebPageDto {
-  @IsNumber()
+  @IsInt()
   @IsNotEmpty()
   readonly id: number;
 
