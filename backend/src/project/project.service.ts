@@ -12,6 +12,8 @@ import { WebPageEntity } from './entities/webpage.entity';
 import CreateWebPageDto from './dto/create-webpage.dto';
 import { SingleResultsEntity } from './entities/singleResults.entity';
 import RunSingleTestDto from './dto/run-single-test.dto';
+import { delay } from '../common/utils/functions';
+import Status from './enums/status.enum';
 
 @Injectable()
 export class ProjectService {
@@ -26,6 +28,9 @@ export class ProjectService {
     private readonly singleResultsRepository: Repository<SingleResultsEntity>,
   ) {
   }
+
+  private readonly POLL_INTERVAL = 10 * 1000;
+  private readonly POLL_TIMEOUT = 15 * 60 * 1000;
 
   async create({ name, description }: CreateProjectDto, userId: number): Promise<ReadProjectDto> {
     const user = await this.userService.findOneById(userId);
@@ -98,6 +103,38 @@ export class ProjectService {
     }
   }
 
+  pollWptServerForResults(testId, interval, timeout) {
+    let start = Date.now();
+    const run = (testId) => {
+      return this.wptService.checkStatus(testId)
+        .then(res => {
+          const { data: { data } } = res;
+          if (data.statusCode === 200) {
+            return data.id;
+          } else if (timeout !== 0 && Date.now() - start > timeout) {
+            throw new Error('Timeout error');
+          } else {
+            return delay(interval).then(() => run(testId));
+          }
+        });
+    };
+
+    return run(testId);
+  }
+
+  async updateSingleTest(testId) {
+    const resultsToUpdate = await this.singleResultsRepository.findOne({ where: { wptTestId: testId } });
+    const { data: { data: { average: { firstView } } } } = await this.wptService.getResults(testId);
+
+    resultsToUpdate.loadTime = firstView?.loadTime;
+    resultsToUpdate.ttfb = firstView?.TTFB;
+    resultsToUpdate.startRender = firstView?.render;
+    resultsToUpdate.speedIndex = firstView?.SpeedIndex;
+    resultsToUpdate.status = Status.Success;
+
+    await this.singleResultsRepository.save(resultsToUpdate);
+  }
+
   async runSingleTest(test: SingleResultsEntity) {
     const { webPage, browser, connectivity, runs, isMobile } = test;
     const { data } = await this.wptService.runTest(webPage.url, browser, connectivity, runs, isMobile);
@@ -108,6 +145,11 @@ export class ProjectService {
         message: 'WPT server error',
       }, HttpStatus.INTERNAL_SERVER_ERROR);
     }
+
+    this.pollWptServerForResults(data.data.testId, this.POLL_INTERVAL, this.POLL_TIMEOUT)
+      .then(result => this.updateSingleTest(result))
+      .catch(err => console.log(err));
+
     return data.data;
   }
 
