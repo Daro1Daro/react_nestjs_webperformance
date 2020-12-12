@@ -6,3 +6,9 @@ export function createRandomString(length: number): string {
   }
   return result;
 }
+
+export function delay(t) {
+  return new Promise(function(resolve) {
+    setTimeout(resolve, t);
+  });
+}
