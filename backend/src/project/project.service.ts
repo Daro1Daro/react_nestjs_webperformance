@@ -135,7 +135,7 @@ export class ProjectService {
     await this.singleResultsRepository.save(resultsToUpdate);
   }
 
-  async runSingleTest(test: SingleResultsEntity) {
+  async runSingleTest(test: SingleResultsEntity): Promise<Object> {
     const { webPage, browser, connectivity, runs, isMobile } = test;
     const { data } = await this.wptService.runTest(webPage.url, browser, connectivity, runs, isMobile);
 
