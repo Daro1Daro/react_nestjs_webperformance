@@ -1,25 +1,37 @@
-import logo from './logo.svg';
+import React, { Component } from 'react';
+import { Switch, Route, Redirect } from 'react-router-dom';
+import { connect } from 'react-redux';
+import { createStructuredSelector } from 'reselect';
+
+import LoginAndRegisterPage from './pages/login-and-register-page/login-and-register-page.component';
+import HomePage from './pages/home-page/home-page.component';
+import Dashboard from './pages/dashboard/dashboard.component';
+import PrivateRoute from './components/private-route/private-route.component';
+
+import { selectCurrentUser } from './redux/user/user.selectors';
+
 import './App.css';
 
-function App() {
-  const fetchApi = () => {
-    fetch('/services')
-      .then(response => {
-        console.log(response);
-      })
-      .catch(error => {
-        console.log(error);
-      });
-  };
+class App extends Component {
+  render() {
+    const { currentUser } = this.props;
 
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <button type={'button'} onClick={fetchApi}>Kliknij!</button>
-      </header>
-    </div>
-  );
+    return (
+      <div>
+        <div>Current user: {currentUser?.email}</div>
+        <Switch>
+          <Route exact path={'/'} component={HomePage}/>
+          <Route exact path={'/sign-in'}
+                 render={() => currentUser ? (<Redirect to={'/dashboard'}/>) : (<LoginAndRegisterPage/>)}/>
+          <PrivateRoute exact path={'/dashboard'} component={Dashboard}/>
+        </Switch>
+      </div>
+    );
+  }
 }
 
-export default App;
+const mapStateToProps = createStructuredSelector({
+  currentUser: selectCurrentUser,
+});
+
+export default connect(mapStateToProps)(App);
