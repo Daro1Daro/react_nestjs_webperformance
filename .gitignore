@@ -22,6 +22,7 @@
 /frontend/yarn-debug.log*
 /frontend/yarn-error.log*
 
+/frontend/.eslintcache
 
 /backend/node_modules
 /backend/build
