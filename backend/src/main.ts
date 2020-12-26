@@ -2,6 +2,7 @@ import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import * as helmet from 'helmet';
 import * as rateLimit from 'express-rate-limit';
+import * as cookieParser from 'cookie-parser';
 import { ValidationPipe } from '@nestjs/common';
 
 async function bootstrap() {
@@ -20,10 +21,10 @@ async function bootstrap() {
   });
   app.use('/api/auth/register', createAccountLimiter);
 
-  // app.useGlobalPipes(new ValidateInputPipe());
   app.useGlobalPipes(new ValidationPipe({ transform: true }));
   app.setGlobalPrefix('api');
-  app.enableCors();
+  // app.enableCors();
+  app.use(cookieParser());
   await app.listen(3000);
 }
 
