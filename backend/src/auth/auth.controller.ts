@@ -26,7 +26,7 @@ export class AuthController {
   }
 
   @UseGuards(JwtAuthGuard)
-  @Post('logout')
+  @Get('logout')
   async logOut(@Request() req, @Res() res) {
     res.cookie('Authentication', '', { httpOnly: true });
     return res.sendStatus(200);
