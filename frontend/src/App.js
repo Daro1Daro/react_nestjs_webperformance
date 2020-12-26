@@ -11,6 +11,7 @@ import AuthorizationRoute from './components/authorization-route/authorization-r
 import { selectCurrentUser } from './redux/user/user.selectors';
 
 import './App.css';
+import Header from './components/header/header.component';
 
 class App extends Component {
   render() {
@@ -19,6 +20,7 @@ class App extends Component {
     return (
       <div>
         <div>Current user: {currentUser?.email}</div>
+        <Header/>
         <Switch>
           <Route exact path={'/'} component={HomePage}/>
           <AuthorizationRoute exact path={'/sign-in'} />
