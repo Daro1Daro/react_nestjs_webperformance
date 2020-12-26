@@ -1,14 +1,18 @@
 import React from 'react';
-import { Link } from "react-router-dom";
+import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
-import { createStructuredSelector } from "reselect";
-import { selectCurrentUser } from "../../redux/user/user.selectors";
-import { signOutStart } from "../../redux/user/user.actions";
+import { createStructuredSelector } from 'reselect';
+import { selectCurrentUser } from '../../redux/user/user.selectors';
+import { signOutStart } from '../../redux/user/user.actions';
+import { ReactComponent as Logo } from '../../assets/logo.svg';
 
 import './header.styles.scss';
 
 const Header = ({ currentUser, signOutStart }) => (
   <div className={'header'}>
+    <Link className={'logo-container'} to={'/'}>
+      <Logo className={'logo'}/>
+    </Link>
     <div className={'options'}>
       <Link className={'option'} to={'/dashboard'}>DASHBOARD</Link>
       {
@@ -21,7 +25,7 @@ const Header = ({ currentUser, signOutStart }) => (
       }
     </div>
   </div>
-)
+);
 
 const mapStateToProps = createStructuredSelector({
   currentUser: selectCurrentUser,
@@ -29,6 +33,6 @@ const mapStateToProps = createStructuredSelector({
 
 const mapDispatchToProps = dispatch => ({
   signOutStart: () => dispatch(signOutStart()),
-})
+});
 
 export default connect(mapStateToProps, mapDispatchToProps)(Header);

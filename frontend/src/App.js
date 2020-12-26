@@ -1,25 +1,18 @@
 import React, { Component } from 'react';
 import { Switch, Route } from 'react-router-dom';
-import { connect } from 'react-redux';
-import { createStructuredSelector } from 'reselect';
 
 import HomePage from './pages/home-page/home-page.component';
 import Dashboard from './pages/dashboard/dashboard.component';
 import PrivateRoute from './components/private-route/private-route.component';
 import AuthorizationRoute from './components/authorization-route/authorization-route.component';
 
-import { selectCurrentUser } from './redux/user/user.selectors';
-
 import './App.css';
 import Header from './components/header/header.component';
 
 class App extends Component {
   render() {
-    const { currentUser } = this.props;
-
     return (
       <div>
-        <div>Current user: {currentUser?.email}</div>
         <Header/>
         <Switch>
           <Route exact path={'/'} component={HomePage}/>
@@ -29,10 +22,6 @@ class App extends Component {
       </div>
     );
   }
-}
+};
 
-const mapStateToProps = createStructuredSelector({
-  currentUser: selectCurrentUser,
-});
-
-export default connect(mapStateToProps)(App);
+export default App;
