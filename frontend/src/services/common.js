@@ -1,4 +1,6 @@
-export function handleResponse(response) {
+import config from '../config/config';
+
+export function handleFetchResponse(response) {
   return response.text().then(text => {
     let data;
     try {
@@ -15,3 +17,23 @@ export function handleResponse(response) {
     return data;
   });
 }
+
+export function fetchOptions() {
+  return {
+    headers: new Headers({
+      'Content-Type': 'application/json',
+    }),
+  };
+}
+
+export function fetchOptionsPost(data) {
+  return {
+    ...fetchOptions(),
+    ...{
+      method: 'POST',
+      body: JSON.stringify(data),
+    },
+  };
+}
+
+export const BASE_API_URL = config.API_URL;
