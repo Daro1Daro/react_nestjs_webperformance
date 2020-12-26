@@ -10,8 +10,7 @@ import {
 
 export function* signIn({ payload: emailAndPassword }) {
   try {
-    let { access_token } = yield call(UserService.signIn, emailAndPassword);
-    yield call(UserService.setJWT, access_token);
+    yield call(UserService.signIn, emailAndPassword);
     const user = yield call(UserService.getUser);
     yield put(signInSuccess(user));
   } catch (error) {

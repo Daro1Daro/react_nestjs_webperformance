@@ -2,7 +2,7 @@ const prod = {
   API_URL: '/api',
 };
 const dev = {
-  API_URL: 'http://localhost:3000/api',
+  API_URL: '/api',
 };
 const config = process.env.NODE_ENV === 'development' ? dev : prod;
 
