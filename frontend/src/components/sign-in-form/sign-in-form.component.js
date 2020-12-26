@@ -33,16 +33,18 @@ class SignInForm extends Component {
   }
 
   render() {
+    const { email, password } = this.state;
+
     return (
       <div className={'sign-in-form'}>
-        <h2>I already have an account</h2>
+        <h2 className={'title'}>I already have an account</h2>
         <span>Sign in with your email and password</span>
 
         <form onSubmit={this.handleSubmit}>
           <FormInput
             name={'email'}
             type={'email'}
-            value={this.state.email}
+            value={email}
             handleChange={this.handleChange}
             label={'email'}
             required
@@ -50,7 +52,7 @@ class SignInForm extends Component {
           <FormInput
             name={'password'}
             type={'password'}
-            value={this.state.password}
+            value={password}
             handleChange={this.handleChange}
             label={'password'}
             required
