@@ -9,6 +9,10 @@ class UserService {
     return fetch(`${BASE_API_URL}/auth/logout`, fetchOptions()).then(handleFetchResponse);
   }
 
+  signUp(data) {
+    return fetch(`${BASE_API_URL}/auth/register`, fetchOptionsPost(data)).then(handleFetchResponse);
+  }
+
   getUser() {
     return fetch(`${BASE_API_URL}/auth/profile`, fetchOptions()).then(handleFetchResponse);
   }
