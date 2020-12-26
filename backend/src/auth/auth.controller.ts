@@ -25,6 +25,13 @@ export class AuthController {
     return res.send({ access_token });
   }
 
+  @UseGuards(JwtAuthGuard)
+  @Post('logout')
+  async logOut(@Request() req, @Res() res) {
+    res.cookie('Authentication', '', { httpOnly: true });
+    return res.sendStatus(200);
+  }
+
   @Post('register')
   async signUp(@Body() data: CreateUserDto) {
     return await this.authService.register(data);
