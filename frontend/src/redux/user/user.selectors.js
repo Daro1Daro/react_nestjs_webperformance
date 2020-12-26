@@ -6,3 +6,13 @@ export const selectCurrentUser = createSelector(
   [selectUser],
   (user) => user.currentUser,
 );
+
+export const selectSignUpError = createSelector(
+  [selectUser],
+  (user) => user.signUpError,
+);
+
+export const selectSignUpSuccess = createSelector(
+  [selectUser],
+  (user) => user.signUpSuccess,
+);
