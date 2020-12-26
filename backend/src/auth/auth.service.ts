@@ -35,7 +35,7 @@ export class AuthService {
   }
 
   async sendVerificationEmail(email: string, token: string): Promise<boolean> {
-    const verifyUrl = `${process.env.APP_HOST}/api/user/activate/${token}`;
+    const verifyUrl = `${process.env.APP_HOST}/activate/${token}`;
 
     let transporter = nodemailer.createTransport({
       host: 'smtp.gmail.com',
