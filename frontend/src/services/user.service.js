@@ -7,7 +7,7 @@ class UserService {
   }
 
   signOut() {
-    return fetch(`${BASE_API_URL}/auth/logout`, fetchOptionsPost()).then(handleResponse);
+    return fetch(`${BASE_API_URL}/auth/logout`, fetchOptions()).then(handleResponse);
   }
 
   getUser() {

@@ -1,9 +1,14 @@
 export function handleResponse(response) {
   return response.text().then(text => {
-    const data = text && JSON.parse(text);
+    let data;
+    try {
+      data = JSON.parse(text);
+    } catch (error) {
+      data = text;
+    }
 
     if (!response.ok) {
-      const error = (data && data.message) || response.statusText;
+      const error = (data?.message) || response.statusText;
       return Promise.reject(error);
     }
 
