@@ -4,12 +4,14 @@ import { Switch, Route } from 'react-router-dom';
 import HomePage from './pages/home-page/home-page.component';
 import Dashboard from './pages/dashboard/dashboard.component';
 import ActivationPage from './pages/activation-page/activation-page.component';
+import NotFoundPage from './pages/not-found-page/not-found-page.component';
 
 import Header from './components/header/header.component';
 import PrivateRoute from './components/private-route/private-route.component';
 import AuthorizationRoute from './components/authorization-route/authorization-route.component';
 
 import './App.css';
+
 
 class App extends Component {
   render() {
@@ -21,6 +23,7 @@ class App extends Component {
           <Route path={'/activate/:token'} component={ActivationPage}/>
           <AuthorizationRoute exact path={'/sign-in'} />
           <PrivateRoute exact path={'/dashboard'} component={Dashboard}/>
+          <Route component={NotFoundPage}/>
         </Switch>
       </div>
     );
