@@ -15,6 +15,11 @@ export class SingleResultsEntity extends Config {
   @Column('timestamp', { precision: 3, default: () => 'CURRENT_TIMESTAMP(3)' })
   created: Date;
 
+  @Column({
+    default: true,
+  })
+  isSingle: boolean;
+
   @Column({ nullable: true })
   loadTime: number;
 
