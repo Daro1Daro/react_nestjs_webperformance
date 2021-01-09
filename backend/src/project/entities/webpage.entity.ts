@@ -17,6 +17,11 @@ export class WebPageEntity {
   @Column('timestamp', { precision: 3, default: () => 'CURRENT_TIMESTAMP(3)' })
   created: Date;
 
+  @Column({
+    default: false,
+  })
+  isCyclical: boolean;
+
   @ManyToOne(type => ProjectEntity, project => project.webPages, {
     onDelete: 'CASCADE',
   })
