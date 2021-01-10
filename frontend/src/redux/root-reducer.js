@@ -22,13 +22,13 @@ const projectPersistConfig = {
   key: 'project',
   storage,
   blacklist: ['error']
-}
+};
 
 const resultsPersistConfig = {
   key: 'results',
   storage,
   blacklist: ['error']
-}
+};
 
 const rootReducer = combineReducers({
   user: persistReducer(userPersistConfig, userReducer),
