@@ -1,10 +1,10 @@
 import { createSelector } from 'reselect';
 import memoize from 'lodash.memoize';
 
-const selectProjects = state => state.project;
+const selectProject = state => state.project;
 
 export const selectProjects = createSelector(
-  [selectProjects],
+  [selectProject],
   project => project.projects,
 );
 
