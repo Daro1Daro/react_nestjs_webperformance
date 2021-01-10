@@ -3,11 +3,13 @@ import { persistReducer } from "redux-persist";
 import storage from 'redux-persist/lib/storage';
 
 import userReducer from "./user/user.reducer";
+import projectReducer from './project/project.reducer';
+import resultsReducer from './results/results.reducer';
 
 const rootPersistConfig = {
   key: 'root',
   storage,
-  blacklist: ['user']
+  blacklist: ['user', 'results',]
 };
 
 const userPersistConfig = {
@@ -16,8 +18,22 @@ const userPersistConfig = {
   blacklist: ['signUpSuccess', 'signUpError', 'error']
 };
 
+const projectPersistConfig = {
+  key: 'project',
+  storage,
+  blacklist: ['error']
+}
+
+const resultsPersistConfig = {
+  key: 'results',
+  storage,
+  blacklist: ['error']
+}
+
 const rootReducer = combineReducers({
   user: persistReducer(userPersistConfig, userReducer),
+  project: persistReducer(projectPersistConfig, projectReducer),
+  results: persistReducer(resultsPersistConfig, resultsReducer),
 });
 
 export default persistReducer(rootPersistConfig, rootReducer);
