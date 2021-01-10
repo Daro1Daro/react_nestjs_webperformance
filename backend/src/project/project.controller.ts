@@ -31,4 +31,25 @@ export class ProjectController {
     const { testId } = await this.projectService.runSingleTest(test);
     await this.projectService.updateSingleResultsWithWptTestId(test, testId);
   }
+
+  @UseGuards(JwtAuthGuard)
+  @Get('get-all')
+  async getAll(@Req() req) {
+    const userId = req.user.id;
+    return await this.projectService.findAll(userId);
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @Get('results/single/get-all')
+  async getAllSingleResults(@Req() req) {
+    const userId = req.user.id;
+    return await this.projectService.findAllSingleResults(userId);
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @Get('webpage/get-all')
+  async getAllWebPages(@Req() req) {
+    const userId = req.user.id;
+    return await this.projectService.findAllWebPages(userId);
+  }
 }

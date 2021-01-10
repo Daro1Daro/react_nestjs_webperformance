@@ -53,6 +53,42 @@ export class ProjectService {
     }
   }
 
+  private async findOneById(id: number): Promise<ProjectEntity> {
+    const project = await this.projectRepository.findOne({ where: { id }});
+    if (!project) {
+      return null;
+    }
+    return project;
+  }
+
+  async findAll(userId: number): Promise<any> {
+    return this.projectRepository.find({ where: { user: { id: userId }}});
+  }
+
+  async findAllSingleResults(userId: number): Promise<any> {
+    return await this.singleResultsRepository.createQueryBuilder('results')
+      .addSelect('webPage.id')
+      .addSelect('webPage.url')
+      .addSelect('project.id')
+      .addSelect('project.name')
+      .leftJoin('results.webPage', 'webPage')
+      .leftJoin('webPage.project', 'project')
+      .leftJoin('project.user', 'user')
+      .where('user.id = :userId', { userId })
+      .andWhere('results.isSingle = true')
+      .getMany();
+  }
+
+  async findAllWebPages(userId: number): Promise<any> {
+    return await this.webPageRepository.createQueryBuilder('webPage')
+      .addSelect('project.id')
+      .addSelect('project.name')
+      .leftJoin('webPage.project', 'project')
+      .leftJoin('project.user', 'user')
+      .where('user.id = :userId', { userId })
+      .getMany();
+  }
+
   async createWebPage({ name, url, projectId }: CreateWebPageDto, userId: number): Promise<ReadWebPageDto> {
     const project = await this.findOneByIdAndUserId(projectId, userId);
 
@@ -181,13 +217,5 @@ export class ProjectService {
   private async findOneWebPageByIdAndUserId(webPageId: number, userId: number): Promise<WebPageEntity> {
     const webPages = await this.findWebPagesByUserId(userId);
     return webPages.find(webPage => webPage.id === webPageId);
-  }
-
-  private async findOneById(id: number): Promise<ProjectEntity> {
-    const project = await this.projectRepository.findOne({ where: { id: id }, relations: ['user'] });
-    if (!project) {
-      return null;
-    }
-    return project;
   }
 }
