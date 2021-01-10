@@ -2,7 +2,7 @@ import ResultsActionTypes from './results.types';
 
 const INITIAL_STATE = {
   singleResults: null,
-  isFetching: false,
+  isFetchingSingleResults: false,
   error: '',
 };
 
