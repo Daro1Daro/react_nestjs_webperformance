@@ -1,4 +1,5 @@
 import { takeEvery, takeLatest, put, all, call } from 'redux-saga/effects';
+
 import ResultsActionTypes from './results.types';
 import UserActionTypes from '../user/user.types';
 import ResultsService from '../../services/results.service';
