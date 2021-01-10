@@ -3,6 +3,11 @@ import memoize from 'lodash.memoize';
 
 const selectResults = state => state.results;
 
+export const selectIsFetchingSingleResults = createSelector(
+  [selectResults],
+  results => results.isFetchingSingleResults,
+);
+
 export const selectSingleResults = createSelector(
   [selectResults],
   results => results.singleResults,
