@@ -20,7 +20,7 @@ export const signOutStart = () => ({
 });
 
 export const signOutSuccess = () => ({
-  type: UserActionTypes.SIGN_IN_SUCCESS,
+  type: UserActionTypes.SIGN_OUT_SUCCESS,
 });
 
 export const signOutFailure = error => ({
