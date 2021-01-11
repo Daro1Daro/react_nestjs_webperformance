@@ -13,6 +13,11 @@ export const selectProjects = createSelector(
   project => project.projects,
 );
 
+export const selectIsCreatingProject = createSelector(
+  [selectProject],
+  project => project.isCreating,
+);
+
 export const selectProjectById = memoize(id =>
   createSelector(
     [selectProjects],
