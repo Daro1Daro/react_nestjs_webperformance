@@ -1,11 +1,11 @@
-import { IsAlphanumeric, IsNotEmpty, IsOptional } from 'class-validator';
+import { IsAlphanumeric, IsNotEmpty, IsOptional, IsString } from 'class-validator';
 
 class CreateProjectDto {
   @IsAlphanumeric()
   @IsNotEmpty()
   readonly name: string;
 
-  @IsAlphanumeric()
+  @IsString()
   @IsOptional()
   readonly description: string;
 }
