@@ -22,7 +22,7 @@ class SignUpForm extends Component {
     };
   }
 
-  handleSubmit = async event => {
+  handleSubmit = event => {
     event.preventDefault();
 
     const { signUpStart } = this.props;

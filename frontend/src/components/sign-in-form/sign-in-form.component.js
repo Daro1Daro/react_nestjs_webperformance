@@ -18,7 +18,7 @@ class SignInForm extends Component {
     }
   }
 
-  handleSubmit = async (event) => {
+  handleSubmit = event => {
     event.preventDefault();
 
     const { signInStart } = this.props;
