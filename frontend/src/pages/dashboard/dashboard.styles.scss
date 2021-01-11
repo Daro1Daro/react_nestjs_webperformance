@@ -1,0 +1,16 @@
+.dashboard {
+  .container {
+    width: 100%;
+    max-width: 860px;
+    display: grid;
+    grid-template-columns: 45% 45%;
+    justify-content: center;
+    margin: 30px auto;
+
+    .column {
+      .buttons {
+        margin: 10px;
+      }
+    }
+  }
+}
