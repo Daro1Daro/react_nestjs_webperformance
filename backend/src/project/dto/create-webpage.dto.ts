@@ -1,7 +1,8 @@
-import { IsAlphanumeric, IsNotEmpty, IsNumber, IsUrl } from 'class-validator';
+import { IsNotEmpty, IsNumber, IsString, IsUrl } from 'class-validator';
 
+// TODO: dodaj isCyclical
 class CreateWebPageDto {
-  @IsAlphanumeric()
+  @IsString()
   @IsNotEmpty()
   readonly name: string;
 
