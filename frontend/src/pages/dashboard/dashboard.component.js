@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
 
 import CustomButton from '../../components/custom-button/custom-button.component';
-import ProjectsList from '../../components/projects-list/projects-list.component';
+import ProjectsListContainer from '../../components/projects-list/projects-list.container';
 import ResultsList from '../../components/results-list/results-list.component';
 import CreateProjectDialog from '../../components/create-project-dialog/create-project-dialog.component';
 
@@ -46,7 +46,7 @@ class Dashboard extends Component {
         <div className={'title'}>Dashboard</div>
         <div className={'container'}>
           <div className={'column'}>
-            <ProjectsList
+            <ProjectsListContainer
               isLoading={projectAreLoading}
               projects={projects}
             />

@@ -1,6 +1,5 @@
 import React from 'react';
 
-import WithSpinner from '../with-spinner/with-spinner.component';
 import ListItemLink from '../list-item-link/list-item-link.component';
 
 import { formatDateString } from '../../common/functions';
@@ -12,10 +11,12 @@ import ListItemText from '@material-ui/core/ListItemText';
 import IconButton from '@material-ui/core/IconButton';
 import DeleteIcon from '@material-ui/icons/Delete';
 
-const ProjectsList = ({ projects }) => {
+import './projects-list.component.scss';
 
-  const handleDelete = (id) => {
-    console.log(`delete project: ${id}`);
+const ProjectsList = ({ projects, isDeleting, deleteProject }) => {
+
+  const handleDelete = (project) => {
+    deleteProject(project);
   };
 
   return (
@@ -34,7 +35,7 @@ const ProjectsList = ({ projects }) => {
               <ListItemLink key={project.id} button href={`/project/${project.id}`}>
                 <ListItemText primary={project.name} secondary={formatDateString(project.created)}/>
                 <ListItemSecondaryAction>
-                  <IconButton onClick={() => handleDelete(project.id)} edge='end'>
+                  <IconButton onClick={() => handleDelete({ id: project.id })} edge='end' disabled={isDeleting}>
                     <DeleteIcon/>
                   </IconButton>
                 </ListItemSecondaryAction>
@@ -47,4 +48,4 @@ const ProjectsList = ({ projects }) => {
   );
 };
 
-export default WithSpinner(ProjectsList);
+export default ProjectsList;
