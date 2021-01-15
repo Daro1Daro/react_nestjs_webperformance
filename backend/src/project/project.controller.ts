@@ -1,9 +1,10 @@
 import { Body, Controller, Get, Param, Post, Req, Request, UseGuards } from '@nestjs/common';
 import CreateProjectDto from './dto/create-project.dto';
 import CreateWebPageDto from './dto/create-webpage.dto';
+import RunSingleTestDto from './dto/run-single-test.dto';
+import DeleteProjectDto from './dto/delete-project.dto';
 import { ProjectService } from './project.service';
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
-import RunSingleTestDto from './dto/run-single-test.dto';
 
 @Controller('project')
 export class ProjectController {
@@ -17,10 +18,31 @@ export class ProjectController {
   }
 
   @UseGuards(JwtAuthGuard)
+  @Post('delete')
+  async delete(@Body() data: DeleteProjectDto, @Req() req) {
+    const userId = req.user.id;
+    return await this.projectService.delete(data, userId);
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @Get('get-all')
+  async getAll(@Req() req) {
+    const userId = req.user.id;
+    return await this.projectService.findAll(userId);
+  }
+
+  @UseGuards(JwtAuthGuard)
   @Post('webpage/create')
   async createWebPage(@Body() data: CreateWebPageDto, @Req() req) {
     const userId = req.user.id;
     return await this.projectService.createWebPage(data, userId);
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @Get('webpage/get-all')
+  async getAllWebPages(@Req() req) {
+    const userId = req.user.id;
+    return await this.projectService.findAllWebPages(userId);
   }
 
   @UseGuards(JwtAuthGuard)
@@ -33,23 +55,9 @@ export class ProjectController {
   }
 
   @UseGuards(JwtAuthGuard)
-  @Get('get-all')
-  async getAll(@Req() req) {
-    const userId = req.user.id;
-    return await this.projectService.findAll(userId);
-  }
-
-  @UseGuards(JwtAuthGuard)
   @Get('results/single/get-all')
   async getAllSingleResults(@Req() req) {
     const userId = req.user.id;
     return await this.projectService.findAllSingleResults(userId);
-  }
-
-  @UseGuards(JwtAuthGuard)
-  @Get('webpage/get-all')
-  async getAllWebPages(@Req() req) {
-    const userId = req.user.id;
-    return await this.projectService.findAllWebPages(userId);
   }
 }
