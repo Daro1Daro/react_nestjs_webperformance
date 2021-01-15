@@ -26,6 +26,11 @@ const resultsReducer = (state = INITIAL_STATE, action) => {
         isFetching: false,
         error: action.payload,
       }
+    case ResultsActionTypes.REMOVE_PROJECT_SINGLE_RESULTS:
+      return {
+        ...state,
+        singleResults: state.results.filter(r => r.webPage.project.id !== action.payload),
+      }
     case ResultsActionTypes.CLEAR_RESULTS:
       return INITIAL_STATE;
     default:

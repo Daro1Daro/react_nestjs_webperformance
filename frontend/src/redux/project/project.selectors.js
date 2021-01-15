@@ -18,6 +18,11 @@ export const selectIsCreatingProject = createSelector(
   project => project.isCreating,
 );
 
+export const selectIsDeletingProject = createSelector(
+  [selectProject],
+  project => project.isDeleting,
+);
+
 export const selectProjectById = memoize(id =>
   createSelector(
     [selectProjects],

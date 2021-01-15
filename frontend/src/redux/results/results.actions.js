@@ -14,6 +14,11 @@ export const fetchSingleResultsFailure = error => ({
   payload: error,
 });
 
+export const removeProjectSingleResults = projectId => ({
+  type: ResultsActionTypes.REMOVE_PROJECT_SINGLE_RESULTS,
+  payload: projectId,
+});
+
 export const clearResults = () => ({
   type: ResultsActionTypes.CLEAR_RESULTS,
 });

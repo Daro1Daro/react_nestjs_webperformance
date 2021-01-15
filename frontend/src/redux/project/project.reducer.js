@@ -2,8 +2,10 @@ import ProjectActionTypes from './project.types';
 
 const INITIAL_STATE = {
   projects: [],
+  webPages: [],
   isFetching: false,
-  isCreating: true,
+  isCreating: false,
+  isDeleting: false,
   error: '',
 };
 
@@ -28,6 +30,7 @@ const projectReducer = (state = INITIAL_STATE, action) => {
         error: action.payload,
       };
     case ProjectActionTypes.CREATE_PROJECT_START:
+    case ProjectActionTypes.CREATE_PROJECT_AND_RUN_TEST:
       return {
         ...state,
         isCreating: true,
@@ -43,6 +46,28 @@ const projectReducer = (state = INITIAL_STATE, action) => {
         ...state,
         error: action.payload,
         isCreating: false,
+      }
+    case ProjectActionTypes.DELETE_PROJECT_START:
+      return {
+        ...state,
+        isDeleting: true,
+      }
+    case ProjectActionTypes.DELETE_PROJECT_SUCCESS:
+      return {
+        ...state,
+        isDeleting: false,
+        projects: state.projects.filter(project => project.id !== action.payload.id),
+      }
+    case ProjectActionTypes.DELETE_PROJECT_FAILURE:
+      return {
+        ...state,
+        isDeleting: false,
+        error: action.payload,
+      }
+    case ProjectActionTypes.CREATE_WEB_PAGE_SUCCESS:
+      return {
+        ...state,
+        webPages: state.webPages.concat([action.payload]),
       }
     case ProjectActionTypes.CLEAR_PROJECTS:
       return INITIAL_STATE;

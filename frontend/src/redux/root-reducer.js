@@ -9,7 +9,7 @@ import resultsReducer from './results/results.reducer';
 const rootPersistConfig = {
   key: 'root',
   storage,
-  blacklist: ['user', 'results',]
+  blacklist: ['user', 'results', 'project']
 };
 
 const userPersistConfig = {
@@ -21,7 +21,7 @@ const userPersistConfig = {
 const projectPersistConfig = {
   key: 'project',
   storage,
-  blacklist: ['error', 'isCreating']
+  blacklist: ['error', 'isCreating', 'isDeleting']
 };
 
 const resultsPersistConfig = {
