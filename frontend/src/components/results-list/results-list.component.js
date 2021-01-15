@@ -37,7 +37,7 @@ const ResultsList = ({ results }) => {
           lastResults.length
             ? lastResults.map(r => (
               <ListItemLink key={r.id} button href={`/single-results/${r.id}`}>
-                <ListItemText primary={r.webPage.url} secondary={formatDateString(r.created)}/>
+                <ListItemText primary={`${r.webPage.name} - ${r.webPage.url}`} secondary={formatDateString(r.created)}/>
                 <ListItemSecondaryAction>
                   <IconButton onClick={() => handleDelete(r.id)} edge="end">
                     <DeleteIcon/>
