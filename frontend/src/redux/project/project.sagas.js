@@ -9,8 +9,12 @@ import {
   createProjectSuccess, createProjectFailure,
   deleteProjectSuccess, deleteProjectFailure,
   createWebPageSuccess, createWebPageFailure,
-  clearProjects
+  clearProjects,
 } from './project.actions';
+
+import {
+  fetchSingleResultsStart,
+} from '../results/results.actions';
 
 export function* fetchProjects() {
   try {
@@ -25,7 +29,6 @@ export function* createProject(action) {
   try {
     const createdProject = yield call(ProjectService.create, action.payload);
     yield put(createProjectSuccess(createdProject));
-    return createdProject;
   } catch (error) {
     yield put(createProjectFailure(error));
   }
@@ -42,20 +45,14 @@ export function* createWebPage(action) {
 
 // TODO: delete w catch; osobny endpoint; recentlyCreated w store?
 export function* createProjectAndRunTest(action) {
-  const { project, webPage } = action.payload;
+  const { project, webPage, config } = action.payload;
   try {
     const createdProject = yield call(ProjectService.create, project);
     const createdWebPage = yield call(ProjectService.createWebPage, { projectId: createdProject.id, ...webPage });
-    const testConfig = {
-      connectivity: "FIOS",
-      browser: "Chrome",
-      runs: 1,
-      isMobile: false
-    }
-    // TODO: dodaj do store nowy (jeszcze pusty) results
-    yield call(ProjectService.runSingleTest, testConfig, createdWebPage.id);
+    yield call(ProjectService.runSingleTest, config, createdWebPage.id);
     yield put(createWebPageSuccess(createdWebPage));
     yield put(createProjectSuccess(createdProject));
+    yield put(fetchSingleResultsStart());
   } catch (error) {
     yield put(createProjectFailure(error));
   }
