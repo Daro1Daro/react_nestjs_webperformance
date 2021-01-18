@@ -141,6 +141,22 @@ export class ProjectService {
     }
   }
 
+  async findSingleResults(resultsId: number, userId: number): Promise<any> {
+    return await this.singleResultsRepository.createQueryBuilder('results')
+      .addSelect('webPage.id')
+      .addSelect('webPage.url')
+      .addSelect('webPage.name')
+      .addSelect('project.id')
+      .addSelect('project.name')
+      .leftJoin('results.webPage', 'webPage')
+      .leftJoin('webPage.project', 'project')
+      .leftJoin('project.user', 'user')
+      .where('user.id = :userId', { userId })
+      .andWhere('results.id = :resultsId', { resultsId })
+      .andWhere('results.isSingle = true')
+      .getOne();
+  }
+
   async findAllSingleResults(userId: number): Promise<any> {
     return await this.singleResultsRepository.createQueryBuilder('results')
       .addSelect('webPage.id')
@@ -247,7 +263,7 @@ export class ProjectService {
       .andWhere('user.id = :userId', { userId })
       .getOne();
 
-    if(results) {
+    if (results) {
       await this.singleResultsRepository.delete(results);
     }
 

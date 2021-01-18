@@ -52,8 +52,14 @@ export class ProjectController {
     const userId = req.user.id;
     const test = await this.projectService.createSingleResults(data, parseInt(webPageId), userId);
     const { testId } = await this.projectService.runSingleTest(test);
-    // TODO: niech zw
     return await this.projectService.updateSingleResultsWithWptTestId(test, testId);
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @Get('results/single/get/:resultsId')
+  async getSingleResults(@Req() req, @Param('resultsId') resultsId) {
+    const userId = req.user.id;
+    return await this.projectService.findSingleResults(parseInt(resultsId), userId);
   }
 
   @UseGuards(JwtAuthGuard)
