@@ -1,8 +1,9 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 
 import ListItemLink from '../list-item-link/list-item-link.component';
 
 import { formatDateString } from '../../common/functions';
+import { TestStatus } from '../../common/consts';
 
 import List from '@material-ui/core/List';
 import ListSubheader from '@material-ui/core/ListItem';
@@ -14,11 +15,15 @@ import CircularProgress from '@material-ui/core/CircularProgress';
 
 import './results-list.styles.scss';
 
-const PENDING = 'pending';
-
-const ResultsList = ({ results, isDeleting, deleteResults }) => {
+const ResultsList = ({ results, isDeleting, deleteResults, pollResults }) => {
   const sortedResults = results.sort((a, b) => a.created < b.created);
   const lastResults = sortedResults.length >= 6 ? sortedResults.slice(0, 6) : sortedResults;
+
+  useEffect(() => {
+    for (const r of results) {
+      if (r.status === TestStatus.PENDING) pollResults(r.id);
+    }
+  }, [results, pollResults]);
 
   const handleDelete = (results) => {
     deleteResults(results);
@@ -41,7 +46,7 @@ const ResultsList = ({ results, isDeleting, deleteResults }) => {
                 <ListItemText primary={`${r.webPage.name} - ${r.webPage.url}`} secondary={formatDateString(r.created)}/>
                 <ListItemSecondaryAction>
                   {
-                    r.status === PENDING
+                    r.status === TestStatus.PENDING
                       ? <CircularProgress/>
                       : <IconButton onClick={() => handleDelete({ id: r.id })} edge="end" disabled={isDeleting}>
                           <DeleteIcon/>

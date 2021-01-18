@@ -34,6 +34,25 @@ export const deleteResultsFailure = error => ({
   payload: error,
 });
 
+export const pollSingleResultsStart = resultsId => ({
+  type: ResultsActionTypes.POLL_SINGLE_RESULTS_START,
+  payload: resultsId,
+});
+
+export const pollSingleResultsEnd = () => ({
+  type: ResultsActionTypes.POLL_SINGLE_RESULTS_END,
+});
+
+export const updateSingleResultsSuccess = results => ({
+  type: ResultsActionTypes.UPDATE_SINGLE_RESULTS_SUCCESS,
+  payload: results,
+});
+
+export const updateSingleResultsFailure = error => ({
+  type: ResultsActionTypes.UPDATE_SINGLE_RESULTS_FAILURE,
+  payload: error,
+});
+
 export const clearResults = () => ({
   type: ResultsActionTypes.CLEAR_RESULTS,
 });

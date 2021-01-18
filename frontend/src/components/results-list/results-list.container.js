@@ -2,7 +2,7 @@ import { connect } from 'react-redux';
 import { compose } from 'redux';
 import { createStructuredSelector } from 'reselect';
 
-import { deleteResultsStart } from '../../redux/results/results.actions';
+import { deleteResultsStart, pollSingleResultsStart } from '../../redux/results/results.actions';
 import { selectIsDeletingResults } from '../../redux/results/results.selectors';
 
 import ResultsList from './results-list.component';
@@ -14,6 +14,7 @@ const mapStateToProps = createStructuredSelector({
 
 const mapDispatchToProps = dispatch => ({
   deleteResults: project => dispatch(deleteResultsStart(project)),
+  pollResults: resultsId => dispatch(pollSingleResultsStart(resultsId)),
 })
 
 const ResultsListContainer = compose(
