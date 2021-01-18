@@ -5,6 +5,7 @@ import CreateProjectDto from './dto/create-project.dto';
 import ReadProjectDto from './dto/read-project.dto';
 import ReadWebPageDto from './dto/read-webpage.dto';
 import DeleteProjectDto from './dto/delete-project.dto';
+import DeleteResultsDto from './dto/delete-results.dto';
 import { WptService } from '../wpt/wpt.service';
 import { ProjectEntity } from './entities/project.entity';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -15,6 +16,7 @@ import { SingleResultsEntity } from './entities/singleResults.entity';
 import RunSingleTestDto from './dto/run-single-test.dto';
 import { delay } from '../common/utils/functions';
 import Status from './enums/status.enum';
+
 
 @Injectable()
 export class ProjectService {
@@ -53,7 +55,7 @@ export class ProjectService {
     }
   }
 
-  async delete({ id }: DeleteProjectDto, userId: number): Promise<any> {
+  async delete({ id }: DeleteProjectDto, userId: number): Promise<ProjectEntity> {
     const project = await this.projectRepository.createQueryBuilder('project')
       .leftJoin('project.user', 'user')
       .where('project.id = :id', { id })
@@ -198,19 +200,6 @@ export class ProjectService {
     return run(testId);
   }
 
-  async updateSingleTest(testId) {
-    const resultsToUpdate = await this.singleResultsRepository.findOne({ where: { wptTestId: testId } });
-    const { data: { data: { average: { firstView } } } } = await this.wptService.getResults(testId);
-
-    resultsToUpdate.loadTime = firstView?.loadTime;
-    resultsToUpdate.ttfb = firstView?.TTFB;
-    resultsToUpdate.startRender = firstView?.render;
-    resultsToUpdate.speedIndex = firstView?.SpeedIndex;
-    resultsToUpdate.status = Status.Success;
-
-    await this.singleResultsRepository.save(resultsToUpdate);
-  }
-
   async runSingleTest(test: SingleResultsEntity): Promise<any> {
     const { webPage, browser, connectivity, runs, isMobile } = test;
     const { data } = await this.wptService.runTest(webPage.url, browser, connectivity, runs, isMobile);
@@ -229,8 +218,39 @@ export class ProjectService {
     return data.data;
   }
 
+  async updateSingleTest(testId) {
+    const resultsToUpdate = await this.singleResultsRepository.findOne({ where: { wptTestId: testId } });
+    if (resultsToUpdate) {
+      const { data: { data: { average: { firstView } } } } = await this.wptService.getResults(testId);
+
+      resultsToUpdate.loadTime = firstView?.loadTime;
+      resultsToUpdate.ttfb = firstView?.TTFB;
+      resultsToUpdate.startRender = firstView?.render;
+      resultsToUpdate.speedIndex = firstView?.SpeedIndex;
+      resultsToUpdate.status = Status.Success;
+
+      await this.singleResultsRepository.save(resultsToUpdate);
+    }
+  }
+
   async updateSingleResultsWithWptTestId(test: SingleResultsEntity, wptTestId: string): Promise<SingleResultsEntity> {
     test.wptTestId = wptTestId;
     return await this.singleResultsRepository.save(test);
+  }
+
+  async deleteResults({ id }: DeleteResultsDto, userId: number): Promise<SingleResultsEntity> {
+    const results = await this.singleResultsRepository.createQueryBuilder('results')
+      .leftJoin('results.webPage', 'webPage')
+      .leftJoin('webPage.project', 'project')
+      .leftJoin('project.user', 'user')
+      .where('results.id = :id', { id })
+      .andWhere('user.id = :userId', { userId })
+      .getOne();
+
+    if(results) {
+      await this.singleResultsRepository.delete(results);
+    }
+
+    return results;
   }
 }

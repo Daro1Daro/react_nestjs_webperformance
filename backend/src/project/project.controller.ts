@@ -3,6 +3,7 @@ import CreateProjectDto from './dto/create-project.dto';
 import CreateWebPageDto from './dto/create-webpage.dto';
 import RunSingleTestDto from './dto/run-single-test.dto';
 import DeleteProjectDto from './dto/delete-project.dto';
+import DeleteResultsDto from './dto/delete-results.dto';
 import { ProjectService } from './project.service';
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 
@@ -51,7 +52,8 @@ export class ProjectController {
     const userId = req.user.id;
     const test = await this.projectService.createSingleResults(data, parseInt(webPageId), userId);
     const { testId } = await this.projectService.runSingleTest(test);
-    await this.projectService.updateSingleResultsWithWptTestId(test, testId);
+    // TODO: niech zw
+    return await this.projectService.updateSingleResultsWithWptTestId(test, testId);
   }
 
   @UseGuards(JwtAuthGuard)
@@ -59,5 +61,12 @@ export class ProjectController {
   async getAllSingleResults(@Req() req) {
     const userId = req.user.id;
     return await this.projectService.findAllSingleResults(userId);
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @Post('results/delete')
+  async deleteResults(@Body() data: DeleteResultsDto, @Req() req) {
+    const userId = req.user.id;
+    return await this.projectService.deleteResults(data, userId);
   }
 }
