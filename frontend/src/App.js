@@ -9,7 +9,7 @@ import NotFoundPage from './pages/not-found-page/not-found-page.component';
 
 import Header from './components/header/header.component';
 import PrivateRoute from './components/private-route/private-route.component';
-import AuthorizationRoute from './components/authorization-route/authorization-route.component';
+import PublicOnlyRoute from './components/public-only-route/public-only-route.component';
 
 import './App.css';
 
@@ -21,7 +21,7 @@ class App extends Component {
         <Switch>
           <Route exact path={'/'} component={HomePage}/>
           <Route path={'/activate/:token'} component={ActivationPage}/>
-          <AuthorizationRoute exact path={'/sign-in'} />
+          <PublicOnlyRoute exact path={'/sign-in'} />
           <PrivateRoute exact path={'/dashboard'} component={Dashboard}/>
           <PrivateRoute path={'/single-results/:resultsId'} component={SingleResultsPage}/>
           <Route component={NotFoundPage}/>

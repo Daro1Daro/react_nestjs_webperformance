@@ -6,7 +6,7 @@ import { createStructuredSelector } from 'reselect';
 import { selectCurrentUser } from '../../redux/user/user.selectors';
 import LoginAndRegisterPage from '../../pages/login-and-register-page/login-and-register-page.component';
 
-const AuthorizationRoute = ({ component: Component, currentUser, ...otherProps }) => (
+const PublicOnlyRoute = ({ component: Component, currentUser, ...otherProps }) => (
   <Route
     {...otherProps}
     render={
@@ -19,4 +19,4 @@ const mapStateToProps = createStructuredSelector({
   currentUser: selectCurrentUser,
 });
 
-export default connect(mapStateToProps)(AuthorizationRoute);
+export default connect(mapStateToProps)(PublicOnlyRoute);
