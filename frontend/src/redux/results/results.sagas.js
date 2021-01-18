@@ -5,8 +5,8 @@ import UserActionTypes from '../user/user.types';
 import ResultsService from '../../services/results.service';
 
 import {
-  fetchSingleResultsFailure,
-  fetchSingleResultsSuccess,
+  fetchSingleResultsFailure, fetchSingleResultsSuccess,
+  deleteResultsSuccess, deleteResultsFailure,
   clearResults,
   removeProjectSingleResults,
 } from './results.actions';
@@ -18,6 +18,15 @@ export function* fetchSingleResults() {
     yield put(fetchSingleResultsSuccess(singleResults));
   } catch (error) {
     yield put(fetchSingleResultsFailure(error));
+  }
+}
+
+export function* deleteResults(action) {
+  try {
+    const deletedResults = yield call(ResultsService.delete, action.payload);
+    yield put(deleteResultsSuccess(deletedResults));
+  } catch (error) {
+    yield put(deleteResultsFailure(error));
   }
 }
 
@@ -34,6 +43,10 @@ export function* watchFetchSingleResultsStart() {
   yield takeEvery(ResultsActionTypes.FETCH_SINGLE_RESULTS_START, fetchSingleResults);
 }
 
+export function* watchDeleteResultsStart() {
+  yield takeEvery(ResultsActionTypes.DELETE_RESULTS_START, deleteResults);
+}
+
 export function* watchUserSignOutStart() {
   yield takeLatest(UserActionTypes.SIGN_OUT_START, clearResultsOnSignOut);
 }
@@ -45,6 +58,7 @@ export function* watchDeleteProjectSuccess() {
 export function* resultsSagas() {
   yield all([
     call(watchFetchSingleResultsStart),
+    call(watchDeleteResultsStart),
     call(watchDeleteProjectSuccess),
     call(watchUserSignOutStart),
   ]);

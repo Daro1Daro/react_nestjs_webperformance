@@ -2,7 +2,8 @@ import ResultsActionTypes from './results.types';
 
 const INITIAL_STATE = {
   singleResults: [],
-  isFetchingSingleResults: false,
+  isFetching: false,
+  isDeleting: false,
   error: '',
 };
 
@@ -30,6 +31,23 @@ const resultsReducer = (state = INITIAL_STATE, action) => {
       return {
         ...state,
         singleResults: state.results.filter(r => r.webPage.project.id !== action.payload),
+      }
+    case ResultsActionTypes.DELETE_RESULTS_START:
+      return {
+        ...state,
+        isDeleting: true,
+      }
+    case ResultsActionTypes.DELETE_RESULTS_SUCCESS:
+      return {
+        ...state,
+        isDeleting: false,
+        singleResults: state.singleResults.filter(results => results.id !== action.payload.id),
+      }
+    case ResultsActionTypes.DELETE_RESULTS_FAILURE:
+      return {
+        ...state,
+        isDeleting: false,
+        error: action.payload,
       }
     case ResultsActionTypes.CLEAR_RESULTS:
       return INITIAL_STATE;

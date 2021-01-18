@@ -19,6 +19,21 @@ export const removeProjectSingleResults = projectId => ({
   payload: projectId,
 });
 
+export const deleteResultsStart = results => ({
+  type: ResultsActionTypes.DELETE_RESULTS_START,
+  payload: results,
+});
+
+export const deleteResultsSuccess = deletedResults => ({
+  type: ResultsActionTypes.DELETE_RESULTS_SUCCESS,
+  payload: deletedResults,
+});
+
+export const deleteResultsFailure = error => ({
+  type: ResultsActionTypes.DELETE_RESULTS_FAILURE,
+  payload: error,
+});
+
 export const clearResults = () => ({
   type: ResultsActionTypes.CLEAR_RESULTS,
 });

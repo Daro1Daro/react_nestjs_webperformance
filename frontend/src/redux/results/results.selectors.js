@@ -5,12 +5,17 @@ const selectResults = state => state.results;
 
 export const selectIsFetchingSingleResults = createSelector(
   [selectResults],
-  results => results.isFetchingSingleResults,
+  results => results.isFetching,
 );
 
 export const selectSingleResults = createSelector(
   [selectResults],
   results => results.singleResults,
+);
+
+export const selectIsDeletingResults = createSelector(
+  [selectResults],
+  results => results.isDeleting,
 );
 
 export const selectSingleResultsById = memoize(id =>

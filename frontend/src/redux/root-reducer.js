@@ -27,7 +27,7 @@ const projectPersistConfig = {
 const resultsPersistConfig = {
   key: 'results',
   storage,
-  blacklist: ['error']
+  blacklist: ['error', 'isDeleting']
 };
 
 const rootReducer = combineReducers({
