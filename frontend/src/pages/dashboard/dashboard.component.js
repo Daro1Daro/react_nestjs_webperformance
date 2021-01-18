@@ -4,7 +4,7 @@ import { createStructuredSelector } from 'reselect';
 
 import CustomButton from '../../components/custom-button/custom-button.component';
 import ProjectsListContainer from '../../components/projects-list/projects-list.container';
-import ResultsList from '../../components/results-list/results-list.component';
+import ResultsListContainer from '../../components/results-list/results-list.container';
 import CreateProjectDialog from '../../components/create-project-dialog/create-project-dialog.component';
 
 import { fetchProjectsStart } from '../../redux/project/project.actions';
@@ -55,7 +55,7 @@ class Dashboard extends Component {
             </div>
           </div>
           <div className={'column'}>
-            <ResultsList
+            <ResultsListContainer
               isLoading={singleResultsAreLoading}
               results={singleResults}
             />
