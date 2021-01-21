@@ -6,10 +6,6 @@ import { selectSingleResultsById } from '../../redux/results/results.selectors';
 import './single-results-page.styles.scss';
 
 class SingleResultsPage extends Component {
-  constructor(props) {
-    super(props);
-  }
-
   render() {
     const { currentResults } = this.props;
     return (
