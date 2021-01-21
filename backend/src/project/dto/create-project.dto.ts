@@ -1,8 +1,9 @@
-import { IsNotEmpty, IsOptional, IsString } from 'class-validator';
+import { IsNotEmpty, IsOptional, IsString, MaxLength } from 'class-validator';
 
 class CreateProjectDto {
   @IsString()
   @IsNotEmpty()
+  @MaxLength( 64)
   readonly name: string;
 
   @IsString()
