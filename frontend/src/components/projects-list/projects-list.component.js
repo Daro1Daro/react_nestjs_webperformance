@@ -1,10 +1,10 @@
 import React from 'react';
-
-import ListItemLink from '../list-item-link/list-item-link.component';
+import { useHistory } from 'react-router-dom';
 
 import { formatDateString } from '../../common/functions';
 
 import List from '@material-ui/core/List';
+import ListItem from '@material-ui/core/ListItem';
 import ListSubheader from '@material-ui/core/ListItem';
 import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction';
 import ListItemText from '@material-ui/core/ListItemText';
@@ -14,8 +14,10 @@ import DeleteIcon from '@material-ui/icons/Delete';
 import './projects-list.component.scss';
 
 const ProjectsList = ({ projects, isDeleting, deleteProject }) => {
+  const history = useHistory();
 
-  const handleDelete = (project) => {
+  const handleDelete = (event, project) => {
+    event.stopPropagation();
     deleteProject(project);
   };
 
@@ -32,14 +34,14 @@ const ProjectsList = ({ projects, isDeleting, deleteProject }) => {
         {
           projects
             ? projects.map(project => (
-              <ListItemLink key={project.id} button href={`/project/${project.id}`}>
+              <ListItem key={project.id} button onClick={() => history.push(`/project/${project.id}`)}>
                 <ListItemText primary={project.name} secondary={formatDateString(project.created)}/>
                 <ListItemSecondaryAction>
-                  <IconButton onClick={() => handleDelete({ id: project.id })} edge='end' disabled={isDeleting}>
+                  <IconButton onClick={(event) => handleDelete(event, { id: project.id })} edge='end' disabled={isDeleting}>
                     <DeleteIcon/>
                   </IconButton>
                 </ListItemSecondaryAction>
-              </ListItemLink>
+              </ListItem>
             ))
             : null
         }

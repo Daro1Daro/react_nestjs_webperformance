@@ -1,11 +1,11 @@
 import React, { useEffect } from 'react';
-
-import ListItemLink from '../list-item-link/list-item-link.component';
+import { useHistory } from 'react-router-dom';
 
 import { formatDateString } from '../../common/functions';
 import { TestStatus } from '../../common/consts';
 
 import List from '@material-ui/core/List';
+import ListItem from '@material-ui/core/ListItem';
 import ListSubheader from '@material-ui/core/ListItem';
 import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction';
 import ListItemText from '@material-ui/core/ListItemText';
@@ -16,6 +16,8 @@ import CircularProgress from '@material-ui/core/CircularProgress';
 import './results-list.styles.scss';
 
 const ResultsList = ({ results, isDeleting, deleteResults, pollResults }) => {
+  const history = useHistory();
+
   const sortedResults = results.sort((a, b) => a.created < b.created);
   const lastResults = sortedResults.length >= 6 ? sortedResults.slice(0, 6) : sortedResults;
 
@@ -25,7 +27,8 @@ const ResultsList = ({ results, isDeleting, deleteResults, pollResults }) => {
     }
   }, [results, pollResults]);
 
-  const handleDelete = (results) => {
+  const handleDelete = (event, results) => {
+    event.stopPropagation();
     deleteResults(results);
   };
 
@@ -42,18 +45,18 @@ const ResultsList = ({ results, isDeleting, deleteResults, pollResults }) => {
         {
           lastResults.length
             ? lastResults.map(r => (
-              <ListItemLink key={r.id} button href={`/single-results/${r.id}`}>
+              <ListItem key={r.id} button onClick={() => history.push(`/single-results/${r.id}`)}>
                 <ListItemText primary={`${r.webPage.name} - ${r.webPage.url}`} secondary={formatDateString(r.created)}/>
                 <ListItemSecondaryAction>
                   {
                     r.status === TestStatus.PENDING
                       ? <CircularProgress/>
-                      : <IconButton onClick={() => handleDelete({ id: r.id })} edge="end" disabled={isDeleting}>
+                      : <IconButton onClick={(event) => handleDelete(event, { id: r.id })} edge="end" disabled={isDeleting}>
                           <DeleteIcon/>
                         </IconButton>
                   }
                 </ListItemSecondaryAction>
-              </ListItemLink>
+              </ListItem>
             ))
             : null
         }
