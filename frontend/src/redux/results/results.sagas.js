@@ -3,7 +3,6 @@ import { take, race, takeEvery, takeLatest, put, all, call, delay } from 'redux-
 import ResultsActionTypes from './results.types';
 import UserActionTypes from '../user/user.types';
 import ResultsService from '../../services/results.service';
-
 import { TestStatus } from '../../common/consts';
 
 import {
