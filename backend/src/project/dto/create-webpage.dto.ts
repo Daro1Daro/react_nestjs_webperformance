@@ -1,4 +1,4 @@
-import { IsBoolean, IsNotEmpty, IsNumber, IsString, IsUrl, MaxLength } from 'class-validator';
+import { IsBoolean, IsNotEmpty, IsNumber, IsOptional, IsString, IsUrl, MaxLength } from 'class-validator';
 
 class CreateWebPageDto {
   @IsString()
@@ -15,6 +15,7 @@ class CreateWebPageDto {
   readonly projectId: number;
 
   @IsBoolean()
+  @IsOptional()
   readonly isCyclical: boolean;
 }
 
