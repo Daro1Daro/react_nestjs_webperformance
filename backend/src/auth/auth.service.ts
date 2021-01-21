@@ -20,6 +20,9 @@ export class AuthService {
 
   async validateUser({ email, password }: LoginUserDto): Promise<any> {
     const user = await this.userService.findOneByEmail(email);
+    if (!user) {
+      return null;
+    }
     if (await argon2.verify(user.password, password)) {
       const { password, ...result } = user;
       return result;
