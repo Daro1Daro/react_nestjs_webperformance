@@ -116,7 +116,7 @@ export class ProjectService {
     return webPages.find(webPage => webPage.id === webPageId);
   }
 
-  async createWebPage({ name, url, projectId }: CreateWebPageDto, userId: number): Promise<ReadWebPageDto> {
+  async createWebPage({ name, url, projectId, isCyclical }: CreateWebPageDto, userId: number): Promise<ReadWebPageDto> {
     const project = await this.findOneByIdAndUserId(projectId, userId);
 
     if (!project) {
@@ -127,6 +127,7 @@ export class ProjectService {
     newWebPage.name = name;
     newWebPage.url = url;
     newWebPage.project = project;
+    newWebPage.isCyclical = isCyclical ? isCyclical : false;
 
     const validationErrors = await validate(newWebPage);
     if (validationErrors.length) {
