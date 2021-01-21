@@ -112,6 +112,7 @@ class CreateProjectDialog extends Component {
             type={'text'}
             onChange={this.handleProjectChange}
             fullWidth
+            required
           />
           <TextField
             id={'description'}
@@ -143,6 +144,7 @@ class CreateProjectDialog extends Component {
             onChange={this.handleWebPageChange}
             disabled={!runNow}
             fullWidth
+            required={runNow}
           />
           <TextField
             id={'url'}
@@ -152,6 +154,7 @@ class CreateProjectDialog extends Component {
             onChange={this.handleWebPageChange}
             disabled={!runNow}
             fullWidth
+            required={runNow}
           />
           <div className={'subheader'}>TEST CONFIG</div>
           <div className={'config-inputs'}>
