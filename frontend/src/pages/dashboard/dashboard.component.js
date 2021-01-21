@@ -7,39 +7,23 @@ import ProjectsListContainer from '../../components/projects-list/projects-list.
 import ResultsListContainer from '../../components/results-list/results-list.container';
 import CreateProjectDialog from '../../components/create-project-dialog/create-project-dialog.component';
 
-import { fetchProjectsStart } from '../../redux/project/project.actions';
-import { selectProjects, selectIsFetchingProjects } from '../../redux/project/project.selectors';
+import { fetchProjectsStart, openCreateProjectDialog, closeCreateProjectDialog } from '../../redux/project/project.actions';
+import { selectProjects, selectIsFetchingProjects, selectOpenCreateProjectDialog } from '../../redux/project/project.selectors';
 import { fetchSingleResultsStart } from '../../redux/results/results.actions';
 import { selectSingleResults, selectIsFetchingSingleResults } from '../../redux/results/results.selectors';
 
 import './dashboard.styles.scss';
 
 class Dashboard extends Component {
-  constructor(props) {
-    super(props);
-
-    this.state = {
-      openProjectDialog: false,
-    };
-  }
-
   componentDidMount() {
     const { fetchProjects, fetchSingleResults } = this.props;
     fetchProjects();
     fetchSingleResults();
   }
 
-  handleOpenProjectDialog = () => {
-    this.setState({ openProjectDialog: true });
-  };
-
-  handleCloseProjectDialog = () => {
-    this.setState({ openProjectDialog: false });
-  };
-
   render() {
-    const { openProjectDialog } = this.state;
-    const { singleResults, projects, projectAreLoading, singleResultsAreLoading } = this.props;
+    const { open, singleResults, projects, projectAreLoading, singleResultsAreLoading } = this.props;
+    const { openDialog, closeDialog } = this.props;
 
     return (
       <div className={'dashboard'}>
@@ -51,7 +35,7 @@ class Dashboard extends Component {
               projects={projects}
             />
             <div className={'buttons'}>
-              <CustomButton type={'button'} onClick={this.handleOpenProjectDialog}> CREATE NEW PROJECT </CustomButton>
+              <CustomButton type={'button'} onClick={openDialog}> CREATE NEW PROJECT </CustomButton>
             </div>
           </div>
           <div className={'column'}>
@@ -61,7 +45,7 @@ class Dashboard extends Component {
             />
           </div>
         </div>
-        <CreateProjectDialog open={openProjectDialog} handleClose={this.handleCloseProjectDialog}/>
+        <CreateProjectDialog open={open} handleClose={closeDialog}/>
       </div>
     );
   }
@@ -72,11 +56,14 @@ const mapStateToProps = createStructuredSelector({
   projects: selectProjects,
   projectAreLoading: selectIsFetchingProjects,
   singleResultsAreLoading: selectIsFetchingSingleResults,
+  open: selectOpenCreateProjectDialog,
 });
 
 const mapDispatchToProps = dispatch => ({
   fetchProjects: () => dispatch(fetchProjectsStart()),
   fetchSingleResults: () => dispatch(fetchSingleResultsStart()),
+  openDialog: () => dispatch(openCreateProjectDialog()),
+  closeDialog: () => dispatch(closeCreateProjectDialog()),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Dashboard);

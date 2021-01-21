@@ -65,6 +65,14 @@ export const createWebPageFailure = error => ({
   payload: error,
 });
 
+export const openCreateProjectDialog = () => ({
+  type: ProjectActionTypes.OPEN_CREATE_PROJECT_DIALOG,
+});
+
+export const closeCreateProjectDialog = () => ({
+  type: ProjectActionTypes.CLOSE_CREATE_PROJECT_DIALOG,
+});
+
 export const clearProjects = () => ({
   type: ProjectActionTypes.CLEAR_PROJECTS,
 });

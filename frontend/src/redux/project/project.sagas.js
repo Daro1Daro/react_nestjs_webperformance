@@ -9,6 +9,7 @@ import {
   createProjectSuccess, createProjectFailure,
   deleteProjectSuccess, deleteProjectFailure,
   createWebPageSuccess, createWebPageFailure,
+  closeCreateProjectDialog,
   clearProjects,
 } from './project.actions';
 
@@ -29,6 +30,7 @@ export function* createProject(action) {
   try {
     const createdProject = yield call(ProjectService.create, action.payload);
     yield put(createProjectSuccess(createdProject));
+    yield put(closeCreateProjectDialog());
   } catch (error) {
     yield put(createProjectFailure(error));
   }
@@ -43,16 +45,16 @@ export function* createWebPage(action) {
   }
 }
 
-// TODO: delete w catch; osobny endpoint; recentlyCreated w store?
 export function* createProjectAndRunTest(action) {
   const { project, webPage, config } = action.payload;
   try {
     const createdProject = yield call(ProjectService.create, project);
     const createdWebPage = yield call(ProjectService.createWebPage, { projectId: createdProject.id, ...webPage });
     yield call(ProjectService.runSingleTest, config, createdWebPage.id);
+    yield put(fetchSingleResultsStart());
     yield put(createWebPageSuccess(createdWebPage));
     yield put(createProjectSuccess(createdProject));
-    yield put(fetchSingleResultsStart());
+    yield put(closeCreateProjectDialog());
   } catch (error) {
     yield put(createProjectFailure(error));
   }

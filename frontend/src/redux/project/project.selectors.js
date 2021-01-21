@@ -23,6 +23,11 @@ export const selectIsDeletingProject = createSelector(
   project => project.isDeleting,
 );
 
+export const selectOpenCreateProjectDialog = createSelector(
+  [selectProject],
+  project => project.openCreateProjectDialog,
+);
+
 export const selectProjectById = memoize(id =>
   createSelector(
     [selectProjects],

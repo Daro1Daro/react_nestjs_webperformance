@@ -7,6 +7,7 @@ const INITIAL_STATE = {
   isCreating: false,
   isDeleting: false,
   error: '',
+  openCreateProjectDialog: false,
 };
 
 const projectReducer = (state = INITIAL_STATE, action) => {
@@ -34,41 +35,51 @@ const projectReducer = (state = INITIAL_STATE, action) => {
       return {
         ...state,
         isCreating: true,
-      }
+      };
     case ProjectActionTypes.CREATE_PROJECT_SUCCESS:
       return {
         ...state,
         projects: state.projects.concat([action.payload]),
         isCreating: false,
-      }
+      };
     case ProjectActionTypes.CREATE_PROJECT_FAILURE:
       return {
         ...state,
         error: action.payload,
         isCreating: false,
-      }
+      };
     case ProjectActionTypes.DELETE_PROJECT_START:
       return {
         ...state,
         isDeleting: true,
-      }
+      };
     case ProjectActionTypes.DELETE_PROJECT_SUCCESS:
       return {
         ...state,
         isDeleting: false,
         projects: state.projects.filter(project => project.id !== action.payload.id),
-      }
+      };
     case ProjectActionTypes.DELETE_PROJECT_FAILURE:
       return {
         ...state,
         isDeleting: false,
         error: action.payload,
-      }
+      };
     case ProjectActionTypes.CREATE_WEB_PAGE_SUCCESS:
       return {
         ...state,
         webPages: state.webPages.concat([action.payload]),
-      }
+      };
+    case ProjectActionTypes.OPEN_CREATE_PROJECT_DIALOG:
+      return {
+        ...state,
+        openCreateProjectDialog: true,
+      };
+    case ProjectActionTypes.CLOSE_CREATE_PROJECT_DIALOG:
+      return {
+        ...state,
+        openCreateProjectDialog: false,
+      };
     case ProjectActionTypes.CLEAR_PROJECTS:
       return INITIAL_STATE;
     default:
