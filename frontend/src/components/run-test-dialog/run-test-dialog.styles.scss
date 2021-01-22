@@ -1,0 +1,24 @@
+.create-project-dialog {
+
+  .title {
+    padding-bottom: 0;
+  }
+
+  .create-project-dialog-content {
+    .divider {
+      margin: 10px 0;
+    }
+
+    .subheader {
+      margin: 0 0 10px 0;
+    }
+
+    div~.subheader {
+      margin: 20px 0 5px 0;
+    }
+
+    .checkbox {
+      margin-top: 10px;
+    }
+  }
+}
