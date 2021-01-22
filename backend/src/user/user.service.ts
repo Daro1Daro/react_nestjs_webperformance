@@ -1,7 +1,7 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { UserEntity } from './entities/user.entity';
-import { Repository, getRepository } from 'typeorm';
+import { Repository } from 'typeorm';
 import CreateUserDto from './dto/create-user.dto';
 import { validate } from 'class-validator';
 import { TokenEntity } from './entities/token.entity';
@@ -51,19 +51,17 @@ export class UserService {
     return true;
   }
 
-  async checkIfUsernameOrEmailExists(username: string, email: string): Promise<boolean> {
+  async usernameOrEmailExists(username: string, email: string): Promise<boolean> {
     const user = await this.userRepository.createQueryBuilder('user')
       .where('user.username =(:username)', { username })
       .orWhere('user.email =(:email)', { email })
       .getOne();
 
-    console.log('CHECK IF');
-    console.log(user);
     return !!user;
   }
 
   async create({ username, email, password }: CreateUserDto): Promise<UserEntity> {
-    if (await this.checkIfUsernameOrEmailExists(username, email)) {
+    if (await this.usernameOrEmailExists(username, email)) {
       UserService.throwValidationError('Username and email must be unique.');
     }
 
