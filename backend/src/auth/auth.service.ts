@@ -44,7 +44,7 @@ export class AuthService {
       host: 'smtp.gmail.com',
       port: 587,
       secure: false,
-      ignoreTLS: false,
+      ignoreTLS: true,
       tls: { rejectUnauthorized: false },
       auth: {
         user: process.env.EMAIL_USER,
