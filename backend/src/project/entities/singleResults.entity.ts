@@ -20,16 +20,16 @@ export class SingleResultsEntity extends Config {
   })
   isSingle: boolean;
 
-  @Column({ nullable: true })
+  @Column({ type: 'float', nullable: true })
   loadTime: number;
 
-  @Column({ nullable: true })
+  @Column({ type: 'float', nullable: true })
   ttfb: number;
 
-  @Column({ nullable: true })
+  @Column({ type: 'float', nullable: true })
   speedIndex: number;
 
-  @Column({ nullable: true })
+  @Column({ type: 'float', nullable: true })
   startRender: number;
 
   @Column({
