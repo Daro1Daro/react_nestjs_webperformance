@@ -9,7 +9,9 @@ import {
   createProjectSuccess, createProjectFailure,
   deleteProjectSuccess, deleteProjectFailure,
   createWebPageSuccess, createWebPageFailure,
+  runTestSuccess, runTestFailure,
   closeCreateProjectDialog,
+  closeRunTestDialog,
   clearProjects,
 } from './project.actions';
 
@@ -60,6 +62,20 @@ export function* createProjectAndRunTest(action) {
   }
 }
 
+export function* runTest(action) {
+  const { projectId, webPage, config } = action.payload;
+  try {
+    const createdWebPage = yield call(ProjectService.createWebPage, { projectId: projectId, ...webPage });
+    yield call(ProjectService.runSingleTest, config, createdWebPage.id);
+    yield put(fetchSingleResultsStart());
+    yield put(createWebPageSuccess(createdWebPage));
+    yield put(runTestSuccess());
+    yield put(closeRunTestDialog());
+  } catch (error) {
+    yield put(runTestFailure(error));
+  }
+}
+
 export function* deleteProject(action) {
   try {
     const deletedProject = yield call(ProjectService.delete, action.payload);
@@ -89,6 +105,10 @@ export function* watchCreateProjectAndRunTest() {
   yield takeLatest(ProjectActionTypes.CREATE_PROJECT_AND_RUN_TEST, createProjectAndRunTest);
 }
 
+export function* watchRunTestStart() {
+  yield takeLatest(ProjectActionTypes.RUN_TEST_START, runTest);
+}
+
 export function* watchDeleteProjectStart() {
   yield takeLatest(ProjectActionTypes.DELETE_PROJECT_START, deleteProject);
 }
@@ -104,6 +124,7 @@ export function* projectSagas() {
     call(watchDeleteProjectStart),
     call(watchCreateWebPageStart),
     call(watchCreateProjectAndRunTest),
+    call(watchRunTestStart),
     call(watchUserSignOutStart),
   ]);
 }

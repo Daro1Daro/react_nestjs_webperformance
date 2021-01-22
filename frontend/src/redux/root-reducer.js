@@ -21,7 +21,7 @@ const userPersistConfig = {
 const projectPersistConfig = {
   key: 'project',
   storage,
-  blacklist: ['error', 'isCreating', 'isDeleting']
+  blacklist: ['error', 'isCreating', 'isDeleting', 'isCreatingTest']
 };
 
 const resultsPersistConfig = {

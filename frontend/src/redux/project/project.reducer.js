@@ -5,9 +5,11 @@ const INITIAL_STATE = {
   webPages: [],
   isFetching: false,
   isCreating: false,
+  isCreatingTest: false,
   isDeleting: false,
   error: '',
   openCreateProjectDialog: false,
+  openRunTestDialog: false,
 };
 
 const projectReducer = (state = INITIAL_STATE, action) => {
@@ -65,6 +67,22 @@ const projectReducer = (state = INITIAL_STATE, action) => {
         isDeleting: false,
         error: action.payload,
       };
+    case ProjectActionTypes.RUN_TEST_START:
+      return {
+        ...state,
+        isCreatingTest: true,
+      };
+    case ProjectActionTypes.RUN_TEST_SUCCESS:
+      return {
+        ...state,
+        isCreatingTest: false,
+      };
+    case ProjectActionTypes.RUN_TEST_FAILURE:
+      return {
+        ...state,
+        isCreatingTest: false,
+        error: action.payload,
+      };
     case ProjectActionTypes.CREATE_WEB_PAGE_SUCCESS:
       return {
         ...state,
@@ -79,6 +97,16 @@ const projectReducer = (state = INITIAL_STATE, action) => {
       return {
         ...state,
         openCreateProjectDialog: false,
+      };
+    case ProjectActionTypes.OPEN_RUN_TEST_DIALOG:
+      return {
+        ...state,
+        openRunTestDialog: true,
+      };
+    case ProjectActionTypes.CLOSE_RUN_TEST_DIALOG:
+      return {
+        ...state,
+        openRunTestDialog: false,
       };
     case ProjectActionTypes.CLEAR_PROJECTS:
       return INITIAL_STATE;

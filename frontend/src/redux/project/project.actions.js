@@ -49,7 +49,6 @@ export const deleteProjectFailure = error => ({
   payload: error,
 });
 
-// do cyklicznych testów tworzenia
 export const createWebPageStart = data => ({
   type: ProjectActionTypes.CREATE_WEB_PAGE_START,
   payload: data,
@@ -65,12 +64,34 @@ export const createWebPageFailure = error => ({
   payload: error,
 });
 
+export const runTestStart = testData => ({
+  type: ProjectActionTypes.RUN_TEST_START,
+  payload: testData,
+});
+
+export const runTestSuccess = () => ({
+  type: ProjectActionTypes.RUN_TEST_SUCCESS,
+});
+
+export const runTestFailure = error => ({
+  type: ProjectActionTypes.RUN_TEST_FAILURE,
+  payload: error,
+});
+
 export const openCreateProjectDialog = () => ({
   type: ProjectActionTypes.OPEN_CREATE_PROJECT_DIALOG,
 });
 
 export const closeCreateProjectDialog = () => ({
   type: ProjectActionTypes.CLOSE_CREATE_PROJECT_DIALOG,
+});
+
+export const openRunTestDialog = () => ({
+  type: ProjectActionTypes.OPEN_RUN_TEST_DIALOG,
+});
+
+export const closeRunTestDialog = () => ({
+  type: ProjectActionTypes.CLOSE_RUN_TEST_DIALOG,
 });
 
 export const clearProjects = () => ({

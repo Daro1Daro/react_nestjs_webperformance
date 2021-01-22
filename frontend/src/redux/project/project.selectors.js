@@ -18,6 +18,11 @@ export const selectIsCreatingProject = createSelector(
   project => project.isCreating,
 );
 
+export const selectIsCreatingNewTest = createSelector(
+  [selectProject],
+  project => project.isCreatingTest,
+);
+
 export const selectIsDeletingProject = createSelector(
   [selectProject],
   project => project.isDeleting,
@@ -26,6 +31,11 @@ export const selectIsDeletingProject = createSelector(
 export const selectOpenCreateProjectDialog = createSelector(
   [selectProject],
   project => project.openCreateProjectDialog,
+);
+
+export const selectOpenRunTestDialog = createSelector(
+  [selectProject],
+  project => project.openRunTestDialog,
 );
 
 export const selectProjectById = memoize(id =>
