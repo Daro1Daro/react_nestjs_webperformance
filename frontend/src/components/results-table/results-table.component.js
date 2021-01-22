@@ -36,6 +36,7 @@ const StyledTableCell = withStyles((theme) => ({
 const ResultsTable = ({ rows, isDeleting, deleteResults, pollResults }) => {
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
+  const emptyRows = rowsPerPage - Math.min(rowsPerPage, rows.length - page * rowsPerPage);
 
   const history = useHistory();
 
@@ -44,8 +45,6 @@ const ResultsTable = ({ rows, isDeleting, deleteResults, pollResults }) => {
       if (r.status === TestStatus.PENDING) pollResults(r.id);
     }
   }, [rows, pollResults]);
-
-  const emptyRows = rowsPerPage - Math.min(rowsPerPage, rows.length - page * rowsPerPage);
 
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
