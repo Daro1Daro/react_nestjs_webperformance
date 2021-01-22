@@ -66,8 +66,6 @@ export class AuthService {
   }
 
   async register(user: CreateUserDto): Promise<any> {
-    console.log('REGISTER');
-    console.log(user);
     const createdUser = await this.userService.create(user);
     const createdToken = await this.userService.createEmailToken(createdUser);
     await this.sendVerificationEmail(createdUser.email, createdToken.code);

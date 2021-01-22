@@ -53,10 +53,12 @@ export class UserService {
 
   async checkIfUsernameOrEmailExists(username: string, email: string): Promise<boolean> {
     const user = await this.userRepository.createQueryBuilder('user')
-      .where('user.username = :username', { username })
-      .orWhere('user.email = :email', { email })
+      .where('user.username =(:username)', { username })
+      .orWhere('user.email =(:email)', { email })
       .getOne();
 
+    console.log('CHECK IF');
+    console.log(user);
     return !!user;
   }
 
