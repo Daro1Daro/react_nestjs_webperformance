@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
 
 import CustomButton from '../custom-button/custom-button.component';
+import ConfigFormInput from '../config-form-input/config-form-input.component';
 
 import { createProjectStart, createProjectAndRunTest } from '../../redux/project/project.actions';
 import { selectIsCreatingProject } from '../../redux/project/project.selectors';
@@ -15,10 +16,6 @@ import DialogTitle from '@material-ui/core/DialogTitle';
 import Checkbox from '@material-ui/core/Checkbox';
 import Divider from '@material-ui/core/Divider';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
-import Select from '@material-ui/core/Select';
-import MenuItem from '@material-ui/core/MenuItem';
-import InputLabel from '@material-ui/core/InputLabel';
-import FormControl from '@material-ui/core/FormControl';
 
 import './create-project-dialog.styles.scss';
 
@@ -96,8 +93,7 @@ class CreateProjectDialog extends Component {
 
   render() {
     const { open, handleClose, isCreating } = this.props;
-    const { runNow } = this.state;
-    const { config: { connectivity, browser, runs, isMobile } } = this.state;
+    const { runNow, config } = this.state;
 
     return (
       <Dialog className={'create-project-dialog'} open={open} onClose={handleClose}>
@@ -157,80 +153,11 @@ class CreateProjectDialog extends Component {
             required={runNow}
           />
           <div className={'subheader'}>TEST CONFIG</div>
-          <div className={'config-inputs'}>
-            <FormControl className={'form-control'}>
-              <InputLabel shrink id={'connectivity-label'}>
-                Connectivity
-              </InputLabel>
-              <Select
-                labelId={'connectivity-label'}
-                id={'connectivity-select'}
-                name={'connectivity'}
-                value={connectivity}
-                onChange={this.handleConfigChange}
-                disabled={!runNow}
-              >
-                <MenuItem value={'Cable'}>Cable</MenuItem>
-                <MenuItem value={'DSL'}>DSL</MenuItem>
-                <MenuItem value={'FIOS'}>FIOS</MenuItem>
-                <MenuItem value={'Dial'}>Dial</MenuItem>
-                <MenuItem value={'3G'}>3G</MenuItem>
-                <MenuItem value={'3GFast'}>3GFast</MenuItem>
-                <MenuItem value={'Native'}>Native</MenuItem>
-              </Select>
-            </FormControl>
-            <FormControl className={'form-control'}>
-              <InputLabel shrink id={'browser-label'}>
-                Browser
-              </InputLabel>
-              <Select
-                labelId={'browser-label'}
-                id={'browser-select'}
-                name={'browser'}
-                value={browser}
-                onChange={this.handleConfigChange}
-                disabled={!runNow}
-              >
-                <MenuItem value={'Chrome'}>Chrome</MenuItem>
-                <MenuItem value={'Firefox'}>Firefox</MenuItem>
-              </Select>
-            </FormControl>
-            <FormControl className={'form-control'}>
-              <InputLabel shrink id={'runs-label'}>
-                Runs
-              </InputLabel>
-              <Select
-                labelId={'runs-label'}
-                id={'runs-select'}
-                name={'runs'}
-                value={runs}
-                onChange={this.handleConfigChange}
-                disabled={!runNow}
-              >
-                <MenuItem value={1}>1</MenuItem>
-                <MenuItem value={2}>2</MenuItem>
-                <MenuItem value={3}>3</MenuItem>
-                <MenuItem value={4}>4</MenuItem>
-                <MenuItem value={5}>5</MenuItem>
-              </Select>
-            </FormControl>
-            <FormControl className={'form-control'}>
-              <InputLabel shrink id={'platform-label'}>
-                Platform
-              </InputLabel>
-              <Select
-                labelId={'platform-label'}
-                id={'platform-select'}
-                name={'isMobile'}
-                value={isMobile}
-                onChange={this.handleConfigChange}
-                disabled={!runNow}
-              >
-                <MenuItem value={false}>Desktop</MenuItem>
-                <MenuItem value={true}>Mobile</MenuItem>
-              </Select>
-            </FormControl>
-          </div>
+          <ConfigFormInput
+            handleChange={this.handleConfigChange}
+            config={config}
+            disabled={!runNow}
+          />
         </DialogContent>
         <DialogActions>
           <CustomButton onClick={handleClose}>
