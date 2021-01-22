@@ -8,7 +8,7 @@ import * as nodemailer from 'nodemailer';
 import * as dotenv from 'dotenv';
 import { join } from 'path';
 
-dotenv.config({ path: join(__dirname, `${process.env.NODE_ENV === 'production' ? '' : '../..'}`, `.env.${process.env.NODE_ENV || 'dev'}`) });
+dotenv.config({ path: join(__dirname, `${process.env.NODE_ENV === 'production' ? '..' : '../..'}`, `.env.${process.env.NODE_ENV || 'dev'}`) });
 
 
 @Injectable()
@@ -66,6 +66,8 @@ export class AuthService {
   }
 
   async register(user: CreateUserDto): Promise<any> {
+    console.log('REGISTER');
+    console.log(user);
     const createdUser = await this.userService.create(user);
     const createdToken = await this.userService.createEmailToken(createdUser);
     await this.sendVerificationEmail(createdUser.email, createdToken.code);

@@ -52,12 +52,12 @@ export class UserService {
   }
 
   async checkIfUsernameOrEmailExists(username: string, email: string): Promise<boolean> {
-    const qb = await getRepository(UserEntity)
-      .createQueryBuilder('user')
+    const user = await this.userRepository.createQueryBuilder('user')
       .where('user.username = :username', { username })
-      .orWhere('user.email = :email', { email });
+      .orWhere('user.email = :email', { email })
+      .getOne();
 
-    return !!await qb.getOne();
+    return !!user;
   }
 
   async create({ username, email, password }: CreateUserDto): Promise<UserEntity> {
