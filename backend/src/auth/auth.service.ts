@@ -43,11 +43,9 @@ export class AuthService {
     let transporter = nodemailer.createTransport({
       host: 'smtp.gmail.com',
       port: 587,
-      tls: {
-        secure: false,
-        ignoreTLS: true,
-        rejectUnauthorized: false
-      },
+      secure: false,
+      ignoreTLS: false,
+      tls: { rejectUnauthorized: false },
       auth: {
         user: process.env.EMAIL_USER,
         pass: process.env.EMAIL_PASS,
