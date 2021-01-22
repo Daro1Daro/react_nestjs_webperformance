@@ -40,40 +40,37 @@ export class AuthService {
   async sendVerificationEmail(email: string, token: string): Promise<boolean> {
     const verifyUrl = `${process.env.APP_HOST}/activate/${token}`;
 
-    console.log(process.env.EMAIL_USER);
-    console.log(process.env.EMAIL_PASS)
+    let transporter = nodemailer.createTransport({
+      host: 'smtp.gmail.com',
+      port: 587,
+      secure: false,
+      auth: {
+        user: process.env.EMAIL_USER,
+        pass: process.env.EMAIL_PASS,
+      },
+    });
+
+    let mailOptions = {
+      from: 'WebApp',
+      to: email,
+      subject: 'Verify Email',
+      text: 'Verify Email',
+      html: `Hi! <br><br> Thanks for your registration<br><br><a href="${verifyUrl}">Click here to activate your account</a>`,
+    };
+
     try {
-      let transporter = nodemailer.createTransport({
-        host: 'smtp.gmail.com',
-        port: 587,
-        secure: false,
-        auth: {
-          user: process.env.EMAIL_USER,
-          pass: process.env.EMAIL_PASS,
-        },
-      });
-
-      let mailOptions = {
-        from: 'WebApp',
-        to: email,
-        subject: 'Verify Email',
-        text: 'Verify Email',
-        html: `Hi! <br><br> Thanks for your registration<br><br><a href="${verifyUrl}">Click here to activate your account</a>`,
-      };
-
       return await new Promise<boolean>(async function(resolve, reject) {
         return await transporter.sendMail(mailOptions, async (error, info) => {
-          if (error) return reject(false);
+          if (error) return reject(error);
           resolve(true);
         });
       });
 
 
     } catch (error) {
+      console.log(error);
       console.log(error.message);
     }
-
-
   }
 
   async register(user: CreateUserDto): Promise<any> {

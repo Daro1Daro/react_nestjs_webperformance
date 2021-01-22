@@ -66,13 +66,11 @@ services:
       dockerfile: Dockerfile
     networks:
       - wpt_network
-
     ports:
       - target: 80
         published: 4000
         protocol: tcp
         mode: host
-
     restart: unless-stopped
     container_name: wpt-server
 
