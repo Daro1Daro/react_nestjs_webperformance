@@ -45,6 +45,7 @@ export class AuthService {
       port: 587,
       secure: false,
       ignoreTLS: true,
+      requireTLS: false,
       tls: { rejectUnauthorized: false },
       auth: {
         user: process.env.EMAIL_USER,
