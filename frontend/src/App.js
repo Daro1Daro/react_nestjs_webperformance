@@ -8,7 +8,7 @@ import ProjectPage from './pages/project-page/project-page.component';
 import ActivationPage from './pages/activation-page/activation-page.component';
 import NotFoundPage from './pages/not-found-page/not-found-page.component';
 
-import Header from './components/header/header.component';
+import HeaderContainer from './components/header/header.container';
 import PrivateRoute from './components/private-route/private-route.component';
 import PublicOnlyRoute from './components/public-only-route/public-only-route.component';
 
@@ -18,7 +18,7 @@ class App extends Component {
   render() {
     return (
       <div>
-        <Header/>
+        <HeaderContainer/>
         <Switch>
           <Route exact path={'/'} component={HomePage}/>
           <Route path={'/activate/:token'} component={ActivationPage}/>
